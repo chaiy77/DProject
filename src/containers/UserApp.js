@@ -18,8 +18,8 @@ import theme from '../theme';
 
 const title = 'D-Project';
 
-// const renderAuthenticated = () => <Main title={title} />;
-const renderAuthenticated = () => <Main />;
+const renderAuthenticated = () => <Main title={title} />;
+// const renderAuthenticated = () => <Main />;
 const renderUnAuthenticated = () => (
   <Flex width={1} alignItems="center" justifyContent="center">
     <MAuthenticator />

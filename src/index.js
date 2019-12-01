@@ -7,9 +7,8 @@ import configureStore from './data/store';
 import './index.css';
 import awsConfigs from './aws-configs';
 import UserApp from './containers/UserApp';
-import { ThemeProvider } from 'emotion-theming';
+import { ThemeProvider } from 'theme-ui';
 import theme from './theme';
-import { Button } from 'common/components/base';
 
 Amplify.configure(awsConfigs);
 const store = configureStore();

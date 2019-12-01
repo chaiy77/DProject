@@ -48,7 +48,9 @@ const MainNavigator = ({
       <Flex
         css={css`
           width: ${contentWidth};
-          height: 60px;
+          padding: 0 2em 0 2em;  
+          align-items: center;
+          background: green;
         `}
       >
         <Flex alignItems="center" justifyContent="center" paddingY="20px">
@@ -64,7 +66,7 @@ const MainNavigator = ({
             align-items: center;
             list-style: none;
             padding: 0;
-            margin-left: 80px;
+            margin-left: 3em;
           `}
         >
           {navs.map((nav, idx) => (

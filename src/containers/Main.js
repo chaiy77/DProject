@@ -8,7 +8,7 @@ import { Flex } from 'common/components/base';
 import MainNavigator from 'components/MainNavigator';
 import ProductList from './product/ProductsList';
 
-const width = 960;
+const width = 100;
 const navPath = R.path(['path']);
 const navs = [{ name: 'ชาวประมง', path: '/' }, { name: 'แพ', path: '/docks' }];
 
@@ -17,8 +17,9 @@ const navs = [{ name: 'ชาวประมง', path: '/' }, { name: 'แพ',
  * https://github.com/reach/router/issues/63#issuecomment-428050999
  */
 const contentContainerStyle = css`
-  width: ${width}px;
-  padding: 40px 0;
+  width: ${width}%;
+  padding: 40px;
+  background: gray;
   div[role='group'][tabindex] {
     flex: 1;
   }
@@ -34,7 +35,7 @@ const Main = ({ title }) => {
             navs={navs}
             navigate={navigate}
             location={location}
-            contentWidth={`${width}px`}
+            contentWidth={`${width}%`}
           />
         )}
       </Location>
