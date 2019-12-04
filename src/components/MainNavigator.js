@@ -50,7 +50,7 @@ const MainNavigator = ({
           width: ${contentWidth};
           padding: 0 2em 0 2em;  
           align-items: center;
-          background: green;
+          background: lightblue;
         `}
       >
         <Flex alignItems="center" justifyContent="center" paddingY="20px">
@@ -70,6 +70,7 @@ const MainNavigator = ({
           `}
         >
           {navs.map((nav, idx) => (
+           
             <li key={navName(nav)}>
               <button
                 type="button"
@@ -83,13 +84,30 @@ const MainNavigator = ({
                 <Text fontWeight="bold">{navName(nav)}</Text>
               </button>
             </li>
+            
           ))}
+          <li >
+            <button
+              type="button"
+              onClick={() => (console.log("setting"))}
+              css={navButtonStyle({
+                navSpacing,
+                index: -1,
+                active:false,
+              })}
+            >
+              <Text fontWeight="bold">Setting</Text>
+            </button>
+          </li>
         </ul>
-        <Flex alignItems="center" justifyContent="center" paddingY="20px">
-          <Text fontSize={2} fontWeight="bold" color="white">
-            Account
-          </Text>
+        <Flex alignItems="center" justifyContent="center" padding="20px">
+          <button  type="button">
+            <Text fontSize={2} fontWeight="bold" color="white">
+              Account
+            </Text>
+          </button>
         </Flex>
+        
       </Flex>
     </Flex>
   );
