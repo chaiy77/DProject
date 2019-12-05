@@ -5,7 +5,7 @@ import moment from 'moment';
 import { useQuery } from '@apollo/react-hooks';
 import * as R from 'ramda';
 
-import { Flex, Box, Text } from 'common/components/base';
+import { Flex, Box, Text, Button } from 'common/components/base';
 // import Table from 'common/components/table';
 import { LIST_PRODUCTS } from 'data/graphql/query';
 
@@ -116,7 +116,15 @@ const FishermanList = () => {
           margin: 28px 0;
         `}
       >
-        <div>Completed</div>
+        <div>
+          <Button 
+            css={css`
+              height: 5em;
+              background-color: lightblue;
+            `
+          }>Compledted</Button>
+
+        </div>
         {/* <Table columns={columns} data={dataTofishermanListItems(data)} /> */}
       </Box>
     </Flex>

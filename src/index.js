@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Amplify from 'aws-amplify';
 import { Provider } from 'react-redux';
-
+import { StylesProvider } from "@material-ui/styles";
 import configureStore from './data/store';
 import './index.css';
 import awsConfigs from './aws-configs';
@@ -15,9 +15,11 @@ const store = configureStore();
 
 ReactDOM.render(
   <Provider store={store}>
+    <StylesProvider injectFirst>
     <ThemeProvider theme={theme} >
       <UserApp />
     </ThemeProvider>
+    </StylesProvider>
   </Provider>,
   document.getElementById('root')
 );

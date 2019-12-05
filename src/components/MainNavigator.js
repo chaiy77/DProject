@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { css } from '@emotion/core';
 import * as R from 'ramda';
 
-import { Flex, Text } from 'common/components/base';
+import { Flex, Text, List, ListItem, ListItemText } from 'common/components/base';
 import { locationRootPath } from 'common/utils/location';
 
-const navPath = R.path(['path']);
+const navPath = R.path(['link']);
 const navName = R.path(['name']);
 
 const navButtonStyle = ({ active = false, index = 0, navSpacing = '24px' }) =>
@@ -15,16 +15,21 @@ const navButtonStyle = ({ active = false, index = 0, navSpacing = '24px' }) =>
     font-size: 16px;
     font-weight: bold;
     padding: 10px 14px;
-    color: #677387;
+    color: red;
     background-color: transparent;
     border: none;
     cursor: pointer;
     outline: none;
     margin-left: ${navSpacing};
-    ${active &&
+    &:hover {
+      color: lightgreen
+    };
+    ${active && 
       css`
         color: white;
-      `};
+        background-color:green;
+        `
+    };
     ${index === 0 &&
       css`
         margin-left: 0px;
@@ -51,56 +56,37 @@ const MainNavigator = ({
           padding: 0 2em 0 2em;  
           align-items: center;
           background: lightblue;
+          justify-content: space-between;
+          
         `}
       >
-        <Flex alignItems="center" justifyContent="center" paddingY="20px">
+        <Flex alignItems="center" justifyContent="center" paddingY="20px" width={1/8} height="60px">
           <Text fontSize={2} fontWeight="bold" color="white">
             {logoText}
           </Text>
         </Flex>
-        <ul
-          css={css`
-            flex: 1;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            list-style: none;
-            padding: 0;
-            margin-left: 3em;
-          `}
-        >
+        <Flex width={4/8} height="60px">
+          <List  css={css`
+              flex: 1;
+              display: flex;
+              flex-direction: row;
+              padding: 0;
+              width: 100%;
+            `
+          }>
           {navs.map((nav, idx) => (
-           
-            <li key={navName(nav)}>
-              <button
-                type="button"
-                onClick={() => navigate(navPath(nav))}
-                css={navButtonStyle({
-                  navSpacing,
-                  index: idx,
-                  active: isLocationRootPath(navPath(nav)),
-                })}
-              >
-                <Text fontWeight="bold">{navName(nav)}</Text>
-              </button>
-            </li>
-            
-          ))}
-          <li >
-            <button
-              type="button"
-              onClick={() => (console.log("setting"))}
+            <ListItem button 
+              onClick={()=>navigate(navPath(nav))}
               css={navButtonStyle({
-                navSpacing,
-                index: -1,
-                active:false,
+                active: isLocationRootPath(navPath(nav)),
               })}
             >
-              <Text fontWeight="bold">Setting</Text>
-            </button>
-          </li>
-        </ul>
-        <Flex alignItems="center" justifyContent="center" padding="20px">
+              <ListItemText primary={navName(nav)} />
+            </ListItem>
+          ))}
+          </List>
+        </Flex>
+        <Flex alignItems="center" justifyContent="center" padding="20px" width={1/8} height="60px">
           <button  type="button">
             <Text fontSize={2} fontWeight="bold" color="white">
               Account
