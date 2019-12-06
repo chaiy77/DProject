@@ -46,18 +46,20 @@ const MainNavigator = ({
   location,
   contentWidth,
 }) => {
-  const isLocationRootPath = R.compose(
-    R.equals,
-    locationRootPath
-  )(location);
 
   const [open, setOpen] = React.useState(false);
   const [subMenu, setSubMenu] = React.useState([]);
+  const [activeMenuIndex, setActiveMenu] = React.useState('');
 
-  const handleClick = (nav) => {
+  const isLocationRootPath = R.equals(
+    activeMenuIndex
+  );
+
+  const handleClick = (nav,idx) => {
     console.log(navName(nav));
     const sub = R.filter(R.propEq("menu",navName(nav)));
     let _subMenu = sub(subNavs);
+    setActiveMenu(idx);
     if(_subMenu.length > 0){
       setSubMenu(sub(subNavs)[0]["subMenu"]);
       setOpen(true)
@@ -95,12 +97,17 @@ const MainNavigator = ({
           }>
             {navs.map((nav, idx) => (
               <ListItem button 
-                onClick={()=>handleClick(nav)}
+                onClick={()=>handleClick(nav,idx)}
                 css={navButtonStyle({
-                  active: isLocationRootPath(navPath(nav)),
+                  active: isLocationRootPath(idx),
                 })}
               >
-                <ListItemText primary={navName(nav)} />
+                <ListItemText primary={navName(nav)}  
+                  css={css`
+                    flex: inherit;
+                    margin: 0 auto;
+                  `}
+                />
               </ListItem>
             ))}
           </List>
@@ -122,6 +129,7 @@ const MainNavigator = ({
           <SubMenuNavigator          
             navs={subMenu}
             navigate={navigate}
+            location={location}
           />
         </Collapse>
       </Flex>
@@ -159,6 +167,7 @@ MainNavigator.defaultProps = {
   navigate: () => {},
   location: { pathname: '' },
   contentWidth: '960px',
+  idx: 0,
 };
 
 export default MainNavigator;

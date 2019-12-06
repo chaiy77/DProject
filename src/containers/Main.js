@@ -17,7 +17,7 @@ const width = 100;
 const navPath = R.path(['path']);
 const topNavs = [
   { name: 'buy', path: '/', link: '/'}, 
-  { name: 'sell', path: '/sell/*', link: '/sell' }, 
+  { name: 'sell', path: '/sell', link: '/sell' }, 
   { name: 'รายงาน', path: '/reports', link: '/reports' }, 
   { name: 'ตั้งค่า', path: '/setting', link: 'setting' }
 
@@ -31,13 +31,11 @@ const subNavs = [
     { name: 'ตั้งค่า', path: 'setting' }
   ]},
   { menu: "buy", subMenu:[
-    { name: 'ใบส่งสินค้า/ขายสินค้า', path: 'invoice'}, 
-    { name: 'ใบเสนอราคา', path: 'quotation' }, 
-    { name: 'ใบสำคัญรับเงิน', path: 'receipt' }, 
+    { name: 'ใบรับสินค้า/ซื้อสินค้า', path: 'bol'}, 
+    { name: 'ใบสำคัญจ่ายเงิน', path: 'payment' }, 
     { name: 'ตั้งค่า', path: 'setting' }
   ]},
 ];
-
 /*
  * Style the Router: div[role='group'][tabindex] will select the router div
  * https://github.com/reach/router/issues/63#issuecomment-428050999
