@@ -16,11 +16,26 @@ import Invoice from './Sell/Invoice';
 const width = 100;
 const navPath = R.path(['path']);
 const topNavs = [
-  { name: 'ซื้อ', path: '/', link: '/'}, 
-  { name: 'ขาย', path: '/sell/*', link: '/sell' }, 
+  { name: 'buy', path: '/', link: '/'}, 
+  { name: 'sell', path: '/sell/*', link: '/sell' }, 
   { name: 'รายงาน', path: '/reports', link: '/reports' }, 
   { name: 'ตั้งค่า', path: '/setting', link: 'setting' }
 
+];
+
+const subNavs = [
+  { menu: "sell", subMenu:[
+    { name: 'ใบส่งสินค้า/ขายสินค้า', path: 'invoice'}, 
+    { name: 'ใบเสนอราคา', path: 'quotation' }, 
+    { name: 'ใบสำคัญรับเงิน', path: 'receipt' }, 
+    { name: 'ตั้งค่า', path: 'setting' }
+  ]},
+  { menu: "buy", subMenu:[
+    { name: 'ใบส่งสินค้า/ขายสินค้า', path: 'invoice'}, 
+    { name: 'ใบเสนอราคา', path: 'quotation' }, 
+    { name: 'ใบสำคัญรับเงิน', path: 'receipt' }, 
+    { name: 'ตั้งค่า', path: 'setting' }
+  ]},
 ];
 
 /*
@@ -43,7 +58,8 @@ const Main = ({ title }) => {
         {({ location }) => (
           <MainNavigator
             logoText={title}
-            navs={topNavs}
+            navs={topNavs} 
+            subNavs = {subNavs}
             navigate={navigate}
             location={location}
             contentWidth={`${width}%`}
@@ -57,14 +73,14 @@ const Main = ({ title }) => {
 
         {/* ignore reach-router scroll to navigated position */}
         {/* https://github.com/reach/router/issues/242 */}
-        <Router  primary={false}>
+        {/* <Router  primary={false}>
           <Buy path={navPath(topNavs[0])} />
           <Sell path={navPath(topNavs[1])} >
               <Invoice path="/invoice"/>
           </Sell>
           <Reports path={navPath(topNavs[2])} />
           <Setting path={navPath(topNavs[3])} />
-        </Router>
+        </Router> */}
       </Box>
 
     </Flex>
