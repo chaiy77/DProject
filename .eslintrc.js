@@ -6,12 +6,19 @@ module.exports = {
     node: true,
     jest: true,
   },
-  extends: ['airbnb', 'prettier','plugin:import/errors', 'plugin:import/warnings'],
+  extends: [
+    'airbnb',
+    'prettier',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+  ],
   plugins: ['prettier'],
   rules: {
     'prettier/prettier': ['error'],
     'react/jsx-filename-extension': 0,
     'import/no-extraneous-dependencies': 0,
+    'import/newline-after-import': ['error', { count: 1 }],
+    'react/prop-types': [2, { ignore: ['children'] }],
   },
   settings: {
     'import/resolver': {
@@ -24,10 +31,10 @@ module.exports = {
         config: './build-utils/webpack.common.js',
       },
       'import/resolver': {
-        'node': {
-          'moduleDirectory': ['node_modules', 'src/']
-        }
-      }
+        node: {
+          moduleDirectory: ['node_modules', 'src/'],
+        },
+      },
     },
   },
   overrides: [

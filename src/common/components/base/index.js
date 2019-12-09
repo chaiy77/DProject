@@ -10,6 +10,4 @@ export { default as ListItemText } from './ListItemText';
 export { default as Menu } from './Menu';
 export { default as MenuItem } from './MenuItem';
 export { default as Collapse } from './Collapse';
-
-
-
+export { default as Drawer } from './Drawer';

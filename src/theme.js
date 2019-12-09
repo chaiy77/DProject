@@ -8,7 +8,6 @@ import preset from '@rebass/preset';
  * https://github.com/rebassjs/rebass/issues/621
  */
 export default merge(preset, {
-
   colors: {
     // custom primary color
     primary: 'tomato',

@@ -3,11 +3,16 @@ import PropTypes from 'prop-types';
 import { css } from '@emotion/core';
 import * as R from 'ramda';
 
-import { Flex, Text, List, ListItem, ListItemText, Collapse } from 'common/components/base';
-import { locationRootPath } from 'common/utils/location';
+import {
+  Flex,
+  Text,
+  List,
+  ListItem,
+  ListItemText,
+  Collapse,
+} from 'common/components/base';
 import SubMenuNavigator from './SubMenuNavigator';
 
-const navPath = R.path(['link']);
 const navName = R.path(['name']);
 
 const navButtonStyle = ({ active = false, index = 0, navSpacing = '24px' }) =>
@@ -23,14 +28,13 @@ const navButtonStyle = ({ active = false, index = 0, navSpacing = '24px' }) =>
     outline: none;
     margin-left: ${navSpacing};
     &:hover {
-      color: lightgreen
-    };
-    ${active && 
+      color: lightgreen;
+    }
+    ${active &&
       css`
         color: white;
-        background-color:green;
-        `
-    };
+        background-color: green;
+      `}
     ${index === 0 &&
       css`
         margin-left: 0px;
@@ -40,80 +44,95 @@ const navButtonStyle = ({ active = false, index = 0, navSpacing = '24px' }) =>
 const MainNavigator = ({
   logoText,
   navs,
-  navSpacing,
   navigate,
   subNavs,
   location,
   contentWidth,
 }) => {
-
   const [open, setOpen] = React.useState(false);
   const [subMenu, setSubMenu] = React.useState([]);
   const [activeMenuIndex, setActiveMenu] = React.useState('');
+  const isLocationRootPath = R.equals(activeMenuIndex);
 
-  const isLocationRootPath = R.equals(
-    activeMenuIndex
-  );
-
-  const handleClick = (nav,idx) => {
-    console.log(navName(nav));
-    const sub = R.filter(R.propEq("menu",navName(nav)));
-    let _subMenu = sub(subNavs);
+  const handleClick = (nav, idx) => {
+    const sub = R.filter(R.propEq('menu', navName(nav)));
+    const subMenus = sub(subNavs);
     setActiveMenu(idx);
-    if(_subMenu.length > 0){
-      setSubMenu(sub(subNavs)[0]["subMenu"]);
-      setOpen(true)
-    }else{
+    if (subMenus.length > 0) {
+      setSubMenu(sub(subNavs)[0].subMenu);
+      setOpen(true);
+    } else {
       setSubMenu([]);
-      setOpen(false)
+      setOpen(false);
     }
-  }
+  };
 
   return (
-    <Flex width={1} eight="60px" bg="#0e1726" justifyContent="center" flexDirection="column">
+    <Flex
+      width={1}
+      eight="60px"
+      bg="#0e1726"
+      justifyContent="center"
+      flexDirection="column"
+    >
       <Flex
         css={css`
           width: ${contentWidth};
-          padding: 0 2em 0 2em;  
+          padding: 0 2em 0 2em;
           align-items: center;
           background: lightblue;
           justify-content: space-between;
-          
         `}
       >
-        <Flex alignItems="center" justifyContent="center" paddingY="20px" width={1/8} height="60px">
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          paddingY="20px"
+          width={1 / 8}
+          height="60px"
+        >
           <Text fontSize={2} fontWeight="bold" color="white">
             {logoText}
           </Text>
         </Flex>
-        <Flex width={4/8} height="60px">
-          <List  css={css`
+        <Flex width={4 / 8} height="60px">
+          <List
+            css={css`
               flex: 1;
               display: flex;
               flex-direction: row;
               padding: 0;
               width: 100%;
-            `
-          }>
+            `}
+          >
             {navs.map((nav, idx) => (
-              <ListItem button 
-                onClick={()=>handleClick(nav,idx)}
+              <ListItem
+                key={navName(nav)}
+                button
+                onClick={() => handleClick(nav, idx)}
                 css={navButtonStyle({
                   active: isLocationRootPath(idx),
                 })}
               >
-                <ListItemText primary={navName(nav)}  
+                <ListItemText
+                  primary={navName(nav)}
                   css={css`
                     flex: inherit;
-                    margin: 0 auto;
+                    margin: 0;
                   `}
                 />
               </ListItem>
             ))}
           </List>
         </Flex>
-        <Flex alignItems="center" justifyContent="center" padding="20px" width={1/8} height="60px">
-          <button  type="button">
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          padding="20px"
+          width={1 / 8}
+          height="60px"
+        >
+          <button type="button">
             <Text fontSize={2} fontWeight="bold" color="white">
               Account
             </Text>
@@ -121,12 +140,15 @@ const MainNavigator = ({
         </Flex>
       </Flex>
       <Flex>
-        <Collapse in={open} timeout="auto" unmountOnExit 
+        <Collapse
+          in={open}
+          timeout="auto"
+          unmountOnExit
           css={css`
-              width:100%;
+            width: 100%;
           `}
         >
-          <SubMenuNavigator          
+          <SubMenuNavigator
             navs={subMenu}
             navigate={navigate}
             location={location}
@@ -153,7 +175,6 @@ MainNavigator.propTypes = {
       link: PropTypes.string,
     })
   ),
-  navSpacing: PropTypes.string,
   navigate: PropTypes.func,
   location: PropTypes.oneOfType([PropTypes.object]),
   contentWidth: PropTypes.string,
@@ -163,11 +184,9 @@ MainNavigator.defaultProps = {
   logoText: 'App',
   navs: [],
   subNavs: [],
-  navSpacing: '24px',
   navigate: () => {},
   location: { pathname: '' },
   contentWidth: '960px',
-  idx: 0,
 };
 
 export default MainNavigator;
