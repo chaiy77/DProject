@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 // import * as R from 'ramda';
 import { Router, Location, navigate } from '@reach/router';
@@ -6,6 +6,8 @@ import { css } from '@emotion/core';
 
 import { Flex, Box } from 'common/components/base';
 import MainNavigator from 'components/MainNavigator';
+import QuickMenu from 'components/QuickMenu';
+
 import Setting from './Setting';
 import Sell from './Sell';
 import Buy from './Buy';
@@ -13,6 +15,7 @@ import Reports from './Reports';
 
 import Invoice from './Sell/Invoice';
 import SellSetting from './Sell/SellSetting';
+import { QCreateCustomer, QSearchCustomer } from './Quickmenus';
 
 const width = 100;
 // const navPath = R.path(['path']);
@@ -49,7 +52,6 @@ const subNavs = [
  * https://github.com/reach/router/issues/63#issuecomment-428050999
  */
 const contentContainerStyle = css`
-  width: ${width}%;
   padding: 1em;
   background: gray;
   div[role='group'][tabindex] {
@@ -58,41 +60,63 @@ const contentContainerStyle = css`
 `;
 
 const Main = ({ title }) => {
+  const [qValues, setQValues] = useState('');
+
+  const callbackFromQuick = data => {
+    console.log(data);
+  };
+
+  const quickMenus = [
+    {
+      name: 'Create Customer',
+      component: <QCreateCustomer callback={callbackFromQuick} />,
+    },
+    {
+      name: 'Search Customer',
+      component: <QSearchCustomer callback={callbackFromQuick} />,
+    },
+  ];
+
   return (
     <Flex flexDirection="column" width="100%" height="100%" alignItems="center">
-      <Location>
-        {({ location }) => (
-          <MainNavigator
-            logoText={title}
-            navs={topNavs}
-            subNavs={subNavs}
-            navigate={navigate}
-            location={location}
-            contentWidth={`${width}%`}
-          />
-        )}
-      </Location>
-      <Box
-        flexDirection="column"
+      <Flex width={1}>
+        <Location>
+          {({ location }) => (
+            <MainNavigator
+              logoText={title}
+              navs={topNavs}
+              subNavs={subNavs}
+              navigate={navigate}
+              location={location}
+              contentWidth={`${width}%`}
+            />
+          )}
+        </Location>
+      </Flex>
+      <Flex
+        flexDirection="row"
         width={1}
-        alignItems="center"
         padding="1em"
         css={contentContainerStyle}
       >
         {/* <ProductList /> */}
-
-        {/* ignore reach-router scroll to navigated position */}
-        {/* https://github.com/reach/router/issues/242 */}
-        <Router primary={false}>
-          <Buy path="buy" />
-          <Sell path="sell">
-            <Invoice path="invoice" />
-            <SellSetting path="setting" />
-          </Sell>
-          <Reports path="reports" />
-          <Setting path="setting" />
-        </Router>
-      </Box>
+        <Flex width={2 / 8} padding="1em">
+          <QuickMenu menuList={quickMenus} />
+        </Flex>
+        <Flex width={6 / 8} padding="1em">
+          {/* ignore reach-router scroll to navigated position */}
+          {/* https://github.com/reach/router/issues/242 */}
+          <Router primary={false}>
+            <Buy path="buy" />
+            <Sell path="sell">
+              <Invoice path="invoice" />
+              <SellSetting path="setting" />
+            </Sell>
+            <Reports path="reports" />
+            <Setting path="setting" />
+          </Router>
+        </Flex>
+      </Flex>
     </Flex>
   );
 };

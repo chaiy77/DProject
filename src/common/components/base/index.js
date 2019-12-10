@@ -11,3 +11,6 @@ export { default as Menu } from './Menu';
 export { default as MenuItem } from './MenuItem';
 export { default as Collapse } from './Collapse';
 export { default as Drawer } from './Drawer';
+export { default as ExpansionPanel } from './ExpansionPanel';
+export { default as ExpansionPanelSummary } from './ExpansionPanelSummary';
+export { default as ExpansionPanelDetails } from './ExpansionPanelDetails';

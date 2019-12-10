@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import pngImg from 'assets/images/pngImg.png';
 import jpgImg from 'assets/images/jpgImg.jpg';
@@ -7,7 +7,7 @@ import svgImg from 'assets/images/svgImg.svg';
 import { Flex } from '../common/components/base';
 
 const Main = () => {
-  const [count, setCount] = React.useState(0);
+  const [count, setCount] = useState(0);
 
   return (
     <Flex
