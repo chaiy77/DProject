@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useTable } from 'react-table';
+import { useTable, useRowSelect } from 'react-table';
 import { css } from '@emotion/core';
+import * as R from 'ramda';
 
 const defaultTableStyle = css`
   width: 100%;
@@ -31,12 +32,23 @@ const defaultTableStyle = css`
       }
       tr {
         border-bottom: 1px solid #d8d8d8;
+        cursor: copy;
       }
     }
   }
 `;
 
+const rowStyle = ({ active = false }) => css`
+  ${active &&
+    css`
+      color: white;
+      background-color: #00afec;
+    `}
+`;
+
 const Table = ({ columns, data, tableStyle }) => {
+  const [rowSelectIndex, setRowSelectIndex] = useState(-1);
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -44,6 +56,21 @@ const Table = ({ columns, data, tableStyle }) => {
     rows,
     prepareRow,
   } = useTable({ columns, data });
+
+  const isRowSelect = i => {
+    console.log('in isRowSelect');
+    console.log(i);
+    console.log(rowSelectIndex);
+    console.log(R.equals(rowSelectIndex)(i));
+    return R.equals(rowSelectIndex)(i);
+  };
+
+  const click = row => {
+    console.log(row);
+    console.log(row.index);
+    console.log(row.values);
+    setRowSelectIndex(row.index);
+  };
 
   /* exception use 3rd party libray props */
   /* eslint-disable react/jsx-props-no-spreading */
@@ -61,7 +88,13 @@ const Table = ({ columns, data, tableStyle }) => {
           {rows.map(row => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
+              <tr
+                {...row.getRowProps()}
+                onClick={() => click(row)}
+                css={rowStyle({
+                  active: isRowSelect(row.index),
+                })}
+              >
                 {row.cells.map(cell => {
                   return (
                     <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
