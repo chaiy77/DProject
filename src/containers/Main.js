@@ -15,7 +15,7 @@ import Reports from './Reports';
 
 import Invoice from './Sell/Invoice';
 import SellSetting from './Sell/SellSetting';
-import { QCreateCustomer, QSearchCustomer } from './Quickmenus';
+import { QCreateCustomer, QSearchCustomer, QSearchProduct } from './Quickmenus';
 
 const width = 100;
 // const navPath = R.path(['path']);
@@ -74,6 +74,10 @@ const Main = ({ title }) => {
     {
       name: 'Search Customer',
       component: <QSearchCustomer callback={callbackFromQuick} />,
+    },
+    {
+      name: 'Search Product',
+      component: <QSearchProduct callback={callbackFromQuick} />,
     },
   ];
 

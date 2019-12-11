@@ -14,3 +14,4 @@ export { default as Drawer } from './Drawer';
 export { default as ExpansionPanel } from './ExpansionPanel';
 export { default as ExpansionPanelSummary } from './ExpansionPanelSummary';
 export { default as ExpansionPanelDetails } from './ExpansionPanelDetails';
+export { default as TextField } from './TextField';
