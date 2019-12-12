@@ -6,7 +6,7 @@ import { ThemeProvider } from 'emotion-theming';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
 import { ApolloProvider } from 'react-apollo';
-import appSyncClient from 'appSyncClient';
+import appSyncClient from 'appsyncClient';
 
 import { Flex } from 'common/components/base';
 import { MAuthenticator } from '../common/components/auth';
@@ -18,8 +18,8 @@ import theme from '../theme';
 
 const title = 'D-Project';
 
-// const renderAuthenticated = () => <Main title={title} />;
-const renderAuthenticated = () => <Main />;
+const renderAuthenticated = () => <Main title={title} />;
+// const renderAuthenticated = () => <Main />;
 const renderUnAuthenticated = () => (
   <Flex width={1} alignItems="center" justifyContent="center">
     <MAuthenticator />

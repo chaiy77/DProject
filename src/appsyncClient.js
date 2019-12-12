@@ -67,7 +67,6 @@ const retryLink = new RetryLink({
 });
 
 const complexObjectLink = new ComplexObjectLink(complexObjectsCredentials);
-
 const link = ApolloLink.from([
   onErrorLink,
   retryLink,

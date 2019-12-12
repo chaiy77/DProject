@@ -10,11 +10,11 @@ import preset from '@rebass/preset';
 export default merge(preset, {
   colors: {
     // custom primary color
-    // primary: 'tomato',
+    primary: 'tomato',
   },
   buttons: {
     primary: {
-      backgroundColor: '#07c',
+      backgroundColor: '#075',
       '&:hover': {
         backgroundColor: 'tomato',
       },
