@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTable, useRowSelect } from 'react-table';
 import { css } from '@emotion/core';
@@ -46,7 +46,7 @@ const rowStyle = ({ active = false }) => css`
     `}
 `;
 
-const Table = ({ columns, data, tableStyle }) => {
+const Table = ({ columns, data, tableStyle, resetSelectedRow }) => {
   const [rowSelectIndex, setRowSelectIndex] = useState(-1);
 
   const {
@@ -57,18 +57,15 @@ const Table = ({ columns, data, tableStyle }) => {
     prepareRow,
   } = useTable({ columns, data });
 
+  useEffect(() => {
+    setRowSelectIndex(-1); //reset selected row when only didMounte
+  }, [data]); //call setRowSelectIndex again when [data] changed !!! Hook
+
   const isRowSelect = i => {
-    console.log('in isRowSelect');
-    console.log(i);
-    console.log(rowSelectIndex);
-    console.log(R.equals(rowSelectIndex)(i));
     return R.equals(rowSelectIndex)(i);
   };
 
   const click = row => {
-    console.log(row);
-    console.log(row.index);
-    console.log(row.values);
     setRowSelectIndex(row.index);
   };
 
@@ -114,11 +111,13 @@ Table.propTypes = {
   data: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])),
   columns: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])),
   tableStyle: PropTypes.oneOfType([PropTypes.object]),
+  resetSelectedRow: PropTypes.bool,
 };
 
 Table.defaultProps = {
   data: [],
   columns: [],
+  resetSelectedRow: true,
   tableStyle: defaultTableStyle,
 };
 

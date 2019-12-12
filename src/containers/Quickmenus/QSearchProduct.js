@@ -53,7 +53,6 @@ const QSearchProduct = () => {
   );
   const filterProduct = () => {
     let r = [];
-    console.log('filter product', queryResult);
     if (queryResult.length > 0 && inputText !== '') {
       queryResult.map(prod => {
         if (prod.name.indexOf(inputText) >= 0) r.push(prod);
@@ -69,7 +68,6 @@ const QSearchProduct = () => {
   };
 
   const handleClick = () => {
-    console.log('handleClick', inputText);
     setDisableSerach(true);
     if (inputText === '') {
       if (queryResult.length === 0) {
@@ -90,7 +88,6 @@ const QSearchProduct = () => {
         filterProduct();
       }
     }
-    console.log('filter result :', filterData);
   };
   return (
     <Flex flexDirection="column" width="100%" paddingY="1em">
