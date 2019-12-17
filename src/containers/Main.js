@@ -3,18 +3,28 @@ import PropTypes from 'prop-types';
 // import * as R from 'ramda';
 import { Router, Location, navigate } from '@reach/router';
 import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 
 import { Flex, Box } from 'common/components/base';
 import MainNavigator from 'components/MainNavigator';
 import QuickMenu from 'components/QuickMenu';
 
-import Setting from './Setting';
 import Sell from './Sell';
-import Buy from './Buy';
 import Reports from './Reports';
 
 import Invoice from './Sell/Invoice';
 import SellSetting from './Sell/SellSetting';
+
+import Buy from './Buy';
+import BillOfLoading from './Buy/BillOfLoading';
+import Payment from './Buy/Payment';
+import BuySetting from './Buy/BuySetting';
+
+import Setting from './Setting';
+import SettingProduct from './Settings/SettingProduct';
+import SettingCustomer from './Settings/SettingCustomer';
+import SettingSupplier from './Settings/SettingSupplier';
+
 import { QCreateCustomer, QSearchCustomer, QSearchProduct } from './Quickmenus';
 
 const width = 100;
@@ -23,8 +33,8 @@ const width = 100;
 const topNavs = [
   { name: 'buy', path: '/', link: '/' },
   { name: 'sell', path: '/sell', link: '/sell' },
-  { name: 'รายงาน', path: '/reports', link: '/reports' },
-  { name: 'ตั้งค่า', path: '/setting', link: 'setting' },
+  { name: 'reports', path: '/reports', link: '/reports' },
+  { name: 'setting', path: '/setting', link: '/setting' },
 ];
 
 const subNavs = [
@@ -45,6 +55,14 @@ const subNavs = [
       { name: 'ตั้งค่า', path: '/buy/setting' },
     ],
   },
+  {
+    menu: 'setting',
+    subMenu: [
+      { name: 'ลูกค้า', path: '/setting/customer' },
+      { name: 'ผู้ผลิตสินค้า', path: '/setting/supplier' },
+      { name: 'สินค้า', path: '/setting/product' },
+    ],
+  },
 ];
 
 /*
@@ -59,6 +77,10 @@ const contentContainerStyle = css`
   }
 `;
 
+const StyledRouter = styled(Router)`
+  flex: 1;
+`;
+
 const Main = ({ title }) => {
   const [qValues, setQValues] = useState('');
 
@@ -70,14 +92,17 @@ const Main = ({ title }) => {
     {
       name: 'Create Customer',
       component: <QCreateCustomer callback={callbackFromQuick} />,
+      key: 'createCustomer',
     },
     {
       name: 'Search Customer',
       component: <QSearchCustomer callback={callbackFromQuick} />,
+      key: 'searchCustomer',
     },
     {
       name: 'Search Product',
       component: <QSearchProduct callback={callbackFromQuick} />,
+      key: 'searchProduct',
     },
   ];
 
@@ -104,21 +129,33 @@ const Main = ({ title }) => {
         css={contentContainerStyle}
       >
         {/* <ProductList /> */}
-        <Flex width={2 / 8} padding="1em">
+        <Flex width={2 / 8} padding="0 1em">
           <QuickMenu menuList={quickMenus} />
         </Flex>
-        <Flex width={6 / 8} padding="1em">
+        <Flex width={6 / 8} padding="1em" backgroundColor="white">
           {/* ignore reach-router scroll to navigated position */}
           {/* https://github.com/reach/router/issues/242 */}
-          <Router primary={false}>
-            <Buy path="buy" />
+
+          {/* Provide a way to disable rendering `div` for `Router`,
+           this will problem with flex in children */}
+          {/* https://github.com/reach/router/issues/63 */}
+          <StyledRouter primary={false}>
+            <Buy path="buy">
+              <BillOfLoading path="bol" />
+              <Payment path="payment" />
+              <BuySetting path="setting" />
+            </Buy>
             <Sell path="sell">
               <Invoice path="invoice" />
               <SellSetting path="setting" />
             </Sell>
             <Reports path="reports" />
-            <Setting path="setting" />
-          </Router>
+            <Setting path="setting">
+              <SettingCustomer path="customer" />
+              <SettingSupplier path="supplier" />
+              <SettingProduct path="product" />
+            </Setting>
+          </StyledRouter>
         </Flex>
       </Flex>
     </Flex>

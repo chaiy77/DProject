@@ -1,19 +1,26 @@
 import React from 'react';
-import { Text, Flex, Box } from 'common/components/base';
+import { css } from '@emotion/core';
+import { Flex } from 'common/components/base';
 
-const Buy = () => {
+const Buy = props => {
+  const { children } = props;
+
+  const contentContainerStyle = css`
+    padding: 1em;
+    width: 100%;
+    }
+  `;
+
+  // Wrapping <div> tag for child in nest react/router.Problem of flex element
+  // https://github.com/reach/router/issues/145
   return (
-    <Flex
-      flexDirection="row"
-      width="100%"
-      height="100%"
-      backgroundColor="gray"
-      paddingY="1em"
-    >
-      <Box width={1 / 6} height="100%" minHeight="640px">
-        <Text> Buying</Text>
-      </Box>
-    </Flex>
+    children &&
+    React.cloneElement(children, {
+      className: 'flex-1',
+      children: React.Children.map(children.props.children, child => {
+        return React.cloneElement(child);
+      }),
+    })
   );
 };
 

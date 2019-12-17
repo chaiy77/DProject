@@ -15,3 +15,6 @@ export { default as ExpansionPanel } from './ExpansionPanel';
 export { default as ExpansionPanelSummary } from './ExpansionPanelSummary';
 export { default as ExpansionPanelDetails } from './ExpansionPanelDetails';
 export { default as TextField } from './TextField';
+export { default as Tabs } from './Tabs';
+export { default as Tab } from './Tab';
+export { default as AppBar } from './AppBar';

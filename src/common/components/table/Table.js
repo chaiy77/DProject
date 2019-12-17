@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useTable, useRowSelect } from 'react-table';
+import { useTable } from 'react-table';
 import { css } from '@emotion/core';
 import * as R from 'ramda';
 

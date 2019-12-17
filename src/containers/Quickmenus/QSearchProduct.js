@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Text, Flex, Box, Button, TextField } from 'common/components/base';
-import { Label, Input } from 'common/components/form';
+import React, { useState } from 'react';
+import { Flex, Button, TextField } from 'common/components/base';
 import PropTypes from 'prop-types';
 import { css } from '@emotion/core';
 import Table from 'common/components/table';
 import { useLazyQuery } from '@apollo/react-hooks';
 
-import { LIST_PRODUCTS, GET_PRODUCTS_NAME } from 'data/graphql/query';
+import { GET_PRODUCTS_NAME } from 'data/graphql/query';
 
 const searchButtonStyle = css`
   margin-left: 3em;
@@ -52,7 +51,7 @@ const QSearchProduct = () => {
     }
   );
   const filterProduct = () => {
-    let r = [];
+    const r = [];
     if (queryResult.length > 0 && inputText !== '') {
       queryResult.map(prod => {
         if (prod.name.indexOf(inputText) >= 0) r.push(prod);

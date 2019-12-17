@@ -17,7 +17,7 @@ const menuText = R.path(['name']);
 const menuContent = R.path(['component']);
 const expansionPanelStyle = css`
   &.Mui-expanded {
-    margin: 1px 0;
+    margin: 0;
   }
 `;
 
