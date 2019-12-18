@@ -4,7 +4,7 @@ import { Text, Flex, Button } from 'common/components/base';
 import { css } from '@emotion/core';
 import Table from 'common/components/table';
 import { useLazyQuery } from '@apollo/react-hooks';
-import { GET_PRODUCTS_NAME } from 'data/graphql/query';
+import { GET_PRODUCTS_NAME, GET_LAMBDA } from 'data/graphql/query';
 
 const tableHeaderStyle = css`
   text-align: left;
@@ -29,17 +29,22 @@ const columns = [
 
 const ProductList = ({ setActiveTabIndex, createNewTab }) => {
   const [queryResult, setQueryResult] = useState([]);
-  const [getProducts, { loading, error, data }] = useLazyQuery(
-    GET_PRODUCTS_NAME,
-    {
-      onCompleted: () => {
-        setQueryResult(data.getProductsName.products);
-        console.log(data.getProductsName.products);
-      },
-    }
-  );
+  const [getProducts] = useLazyQuery(GET_PRODUCTS_NAME, {
+    onCompleted: data => {
+      setQueryResult(data.getProductsName.products);
+      console.log(data.getProductsName.products);
+    },
+  });
+
+  const [getLambda] = useLazyQuery(GET_LAMBDA, {
+    onCompleted: data => {
+      console.log('========== get lambda =========');
+      console.log(data.getLambda.products);
+    },
+  });
 
   useEffect(() => {
+    getLambda({ variables: { id: 'product_id001' } });
     getProducts({
       variables: { sk: '#product#&name', count: 5 },
     });
