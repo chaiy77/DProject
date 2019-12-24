@@ -19,14 +19,27 @@ export default class MSignUp extends MAuthPiece {
 
   signUp = async e => {
     e.preventDefault();
-    const { username, password, email } = this.inputs;
-    // console.log({ username, password, email });
+    const {
+      username,
+      password,
+      email,
+      Company,
+      CoCode,
+      Branch,
+      BrCode,
+    } = this.inputs;
+    console.log(Company);
+    console.log({ username, password, email, Company, CoCode, Branch, BrCode });
     try {
       await Auth.signUp({
         username,
         password,
         attributes: {
           email,
+          'custom:Company': Company,
+          'custom:CoCode': CoCode,
+          'custom:Branch': Branch,
+          'custom:BrCode': BrCode,
         },
       })
         .then(data => console.log('signUp completed:', data))
@@ -109,7 +122,51 @@ export default class MSignUp extends MAuthPiece {
                   id="email"
                   name="email"
                   type="email"
-                  placeholder="admin@wittaya.com"
+                  placeholder=""
+                  onChange={this.handleInputChange}
+                />
+              </Box>
+              <Box width={1} mt={4}>
+                <Label htmlFor="Company" mb={2} fontSize={1}>
+                  Company
+                </Label>
+                <Input
+                  id="Company"
+                  name="Company"
+                  placeholder="company name"
+                  onChange={this.handleInputChange}
+                />
+              </Box>
+              <Box width={1} mt={4}>
+                <Label htmlFor="CoCode" mb={2} fontSize={1}>
+                  Co-Code
+                </Label>
+                <Input
+                  id="CoCode"
+                  name="CoCode"
+                  placeholder="company code ex.co12. length 6-9 chars"
+                  onChange={this.handleInputChange}
+                />
+              </Box>
+              <Box width={1} mt={4}>
+                <Label htmlFor="Branch" mb={2} fontSize={1}>
+                  Branch
+                </Label>
+                <Input
+                  id="Branch"
+                  name="Branch"
+                  placeholder="branch name (default : head office)"
+                  onChange={this.handleInputChange}
+                />
+              </Box>
+              <Box width={1} mt={4}>
+                <Label htmlFor="BrCode" mb={2} fontSize={1}>
+                  Branch-Code
+                </Label>
+                <Input
+                  id="BrCode"
+                  name="BrCode"
+                  placeholder="branch code (default : H01)"
                   onChange={this.handleInputChange}
                 />
               </Box>

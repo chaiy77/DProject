@@ -14,6 +14,7 @@ export const actions = {
   autoLoginSuccess: user => payloadAction(types.AUTO_LOGIN_SUCCESS)(user),
   autoLoginFailure: error => payloadAction(types.AUTO_LOGIN_FAILURE)(error),
   loginSuccess: user => payloadAction(types.LOGIN_SUCCESS)(user),
+  logoutRequest: simpleAction(types.LOGOUT_REQUEST),
   logout: simpleAction(types.LOGOUT),
 };
 
@@ -44,12 +45,17 @@ export default (state = initialState, action) => {
       };
     }
     case types.LOGIN_SUCCESS: {
+      console.log(action.payload);
       return {
         ...state,
         user: action.payload,
       };
     }
+    // case types.LOGOUT_REQUEST: {
+    //   console.log('call logout request');
+    // }
     case types.LOGOUT: {
+      //console.log('call logout');
       return {
         ...state,
         user: null,

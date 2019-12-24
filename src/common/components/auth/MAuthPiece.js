@@ -76,10 +76,6 @@ export default class MAuthPiece extends React.Component {
 
   render() {
     const { authState } = this.props;
-    // console.log("======== MAuthPiece.render========");
-    // console.log(authState);
-    // console.log(authData);
-    // console.log("==============================");
     if (!this.validAuthStates.includes(authState)) {
       return null;
     }

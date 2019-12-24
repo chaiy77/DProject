@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { css } from '@emotion/core';
 import * as R from 'ramda';
+import { connect } from 'react-redux';
+import { actions as authActions } from '../data/reducers/auth';
+import { Auth } from 'aws-amplify';
 
 import {
   Flex,
@@ -48,6 +51,7 @@ const MainNavigator = ({
   subNavs,
   location,
   contentWidth,
+  logout,
 }) => {
   const [open, setOpen] = React.useState(false);
   const [subMenu, setSubMenu] = React.useState([]);
@@ -65,6 +69,12 @@ const MainNavigator = ({
       setSubMenu([]);
       setOpen(false);
     }
+  };
+
+  const clickLogout = () => {
+    Auth.signOut({ global: true })
+      .then(() => logout())
+      .catch(err => console.log(err));
   };
 
   return (
@@ -132,9 +142,9 @@ const MainNavigator = ({
           width={1 / 8}
           height="60px"
         >
-          <button type="button">
+          <button type="button" onClick={() => clickLogout()}>
             <Text fontSize={2} fontWeight="bold" color="white">
-              Account
+              Logout
             </Text>
           </button>
         </Flex>
@@ -189,4 +199,13 @@ MainNavigator.defaultProps = {
   contentWidth: '960px',
 };
 
-export default MainNavigator;
+const mapDispachToProps = dispatch => {
+  return {
+    logout: () => dispatch(authActions.logoutRequest()),
+  };
+};
+
+export default connect(
+  null,
+  mapDispachToProps
+)(MainNavigator);
