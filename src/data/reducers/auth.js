@@ -24,14 +24,6 @@ export const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    // case types.AUTO_LOGIN_REQUEST: {
-    //   console.log("===== reducer.AUTO_LOGIN_REQUEST ===== ");
-    //   console.log(action);
-    //   return {
-    //     ...state,
-    //     user: null,
-    //   };
-    // }
     case types.AUTO_LOGIN_SUCCESS: {
       return {
         ...state,
@@ -45,17 +37,12 @@ export default (state = initialState, action) => {
       };
     }
     case types.LOGIN_SUCCESS: {
-      console.log(action.payload);
       return {
         ...state,
         user: action.payload,
       };
     }
-    // case types.LOGOUT_REQUEST: {
-    //   console.log('call logout request');
-    // }
     case types.LOGOUT: {
-      //console.log('call logout');
       return {
         ...state,
         user: null,

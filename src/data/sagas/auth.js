@@ -24,9 +24,6 @@ export function* autoLoginFlow() {
       );
       yield put(actions.autoLoginSuccess(user(data)));
       yield take(types.LOGOUT_REQUEST);
-      // console.log('before yield call Auth.signOut');
-      // yield call(Auth.signOut());
-      // console.log('after yield call Auth.signOut');
       yield put(actions.logout());
     } catch (error) {
       yield put(actions.autoLoginFailure(error));

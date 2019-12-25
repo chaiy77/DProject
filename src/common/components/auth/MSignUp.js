@@ -28,8 +28,8 @@ export default class MSignUp extends MAuthPiece {
       Branch,
       BrCode,
     } = this.inputs;
-    console.log(Company);
-    console.log({ username, password, email, Company, CoCode, Branch, BrCode });
+    // console.log(Company);
+    // console.log({ username, password, email, Company, CoCode, Branch, BrCode });
     try {
       await Auth.signUp({
         username,
@@ -75,7 +75,7 @@ export default class MSignUp extends MAuthPiece {
       >
         <Box width={1}>
           <Text fontWeight="bold" fontSize={5} sx={{ textAlign: 'center' }}>
-            Taxd
+            D-Project
           </Text>
         </Box>
         <Card width={1} mt={4} bg="white">
