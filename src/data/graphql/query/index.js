@@ -1,3 +1,3 @@
-export { default as LIST_PRODUCTS } from './listProducts';
-export { default as GET_PRODUCTS_NAME } from './getProductsName';
-export { default as GET_LAMBDA } from './testLambda';
+export { default as LIST_ITEMS } from './listItems';
+export { default as GET_ITEMS_NAME } from './getItemsName';
+// export { default as GET_LAMBDA } from './testLambda';

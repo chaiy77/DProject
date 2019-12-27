@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Flex, Button, TextField } from 'common/components/base';
 import PropTypes from 'prop-types';
 import { css } from '@emotion/core';
-import Table from 'common/components/table';
+import { Table } from 'common/components/table';
 import { useLazyQuery } from '@apollo/react-hooks';
 
-import { GET_PRODUCTS_NAME } from 'data/graphql/query';
+import { GET_ITEMS_NAME } from 'data/graphql/query';
 
 const searchButtonStyle = css`
   margin-left: 3em;
@@ -40,16 +40,13 @@ const QSearchProduct = () => {
   const [queryResult, setQueryResult] = useState([]);
   const [disableSearch, setDisableSerach] = useState(false);
 
-  const [getProducts, { loading, error, data }] = useLazyQuery(
-    GET_PRODUCTS_NAME,
-    {
-      onCompleted: () => {
-        setQueryResult(data.getProductsName.products);
-        setFilterData(data.getProductsName.products);
-        setDisableSerach(false);
-      },
-    }
-  );
+  const [getProducts, { loading, error, data }] = useLazyQuery(GET_ITEMS_NAME, {
+    onCompleted: () => {
+      setQueryResult(data.getItemsName.items);
+      setFilterData(data.getItemsName.items);
+      setDisableSerach(false);
+    },
+  });
   const filterProduct = () => {
     const r = [];
     if (queryResult.length > 0 && inputText !== '') {
