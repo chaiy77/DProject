@@ -17,13 +17,13 @@ const navButtonStyle = ({ active = false, index = 0, navSpacing = '0px' }) =>
     padding: 10px 14px;
     width: 90%;
     color: #677387;
-    background-color:red;
+    background-color: red;
     border: none;
     cursor: pointer;
     outline: none;
     margin-top: ${navSpacing};
-    &:hover{
-        color: lightgreen
+    &:hover {
+      color: lightgreen;
     }
     ${active &&
       css`
@@ -31,19 +31,13 @@ const navButtonStyle = ({ active = false, index = 0, navSpacing = '0px' }) =>
       `};
   `;
 
-const SideNavigator = ({
-  navs,
-  navSpacing,
-  navigate,
-  location,
- 
-}) => {
+const SideNavigator = ({ navs, navSpacing, navigate, location }) => {
   const isLocationRootPath = R.compose(
     R.equals,
     locationRootPath
   )(location);
   return (
-    <Flex width="100%" height="100%"  bg="#0e1726" justifyContent="center">
+    <Flex width="100%" height="100%" bg="#0e1726" justifyContent="center">
       <Flex
         css={css`
           width: 100%;
@@ -66,7 +60,7 @@ const SideNavigator = ({
             list-style: none;
             padding: 0;
             margin: 2em auto;
-            width:100%;
+            width: 100%;
           `}
         >
           {navs.map((nav, idx) => (
@@ -85,7 +79,6 @@ const SideNavigator = ({
             </li>
           ))}
         </ul>
-        
       </Flex>
     </Flex>
   );

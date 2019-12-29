@@ -21,10 +21,7 @@ const QCreateCustomer = ({ callback }) => {
     <Flex flexDirection="column" width="100%" paddingY="1em">
       <Text> Quick Create Customer </Text>
       <Label> Customer </Label>
-      <Input
-        placeholder="customer name"
-        onChange={e => inputOnChange(e)}
-      ></Input>
+      <Input placeholder="customer name" onChange={e => inputOnChange(e)} />
       <Button onClick={handleClick}> search </Button>
     </Flex>
   );

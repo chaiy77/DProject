@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { css } from '@emotion/core';
 import * as R from 'ramda';
 import { connect } from 'react-redux';
-import { actions as authActions } from '../data/reducers/auth';
 import { Auth } from 'aws-amplify';
 
 import {
@@ -14,6 +13,7 @@ import {
   ListItemText,
   Collapse,
 } from 'common/components/base';
+import { actions as authActions } from '../data/reducers/auth';
 import SubMenuNavigator from './SubMenuNavigator';
 
 const navName = R.path(['name']);

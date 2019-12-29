@@ -74,15 +74,13 @@ const QSearchProduct = () => {
         setFilterData(queryResult);
         setDisableSerach(false);
       }
+    } else if (queryResult.length > 0) {
+      filterProduct();
     } else {
-      if (queryResult.length > 0) {
-        filterProduct();
-      } else {
-        getProducts({
-          variables: { sk: '#product#&name', count: 5 },
-        });
-        filterProduct();
-      }
+      getProducts({
+        variables: { sk: '#product#&name', count: 5 },
+      });
+      filterProduct();
     }
   };
   return (
@@ -94,7 +92,7 @@ const QSearchProduct = () => {
           placeholder="insert product name"
           onChange={e => inputOnChange(e)}
           width={6 / 8}
-        ></TextField>
+        />
         <Button
           variant="contained"
           css={searchButtonStyle}
