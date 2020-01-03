@@ -141,7 +141,7 @@ const EditableTable = ({
                   active: isRowSelect(row.index),
                 })}
               >
-                <td> {row.index + 1} </td>
+                <td>{row.index + 1}</td>
                 {/* https://codesandbox.io/s/github/tannerlinsley/react-table/tree/master/examples/data-driven-classes-and-styles */}
                 {row.cells.map(cell => {
                   return (
@@ -168,6 +168,20 @@ const EditableTable = ({
   /* eslint-enable */
 };
 
+EditableCell.propTypes = {
+  cell: PropTypes.object,
+  row: PropTypes.object,
+  column: PropTypes.object,
+  updateTableData: PropTypes.func, // This is a custom function that we supplied to our table instance
+};
+
+EditableCell.defaultProps = {
+  cell: {},
+  row: {},
+  column: {},
+  updateTableData: () => {}, // This is a custom function that we supplied to our table instance
+};
+
 EditableTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])),
   columns: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])),
@@ -182,7 +196,7 @@ EditableTable.defaultProps = {
   columns: [],
   resetSelectedRow: true,
   tableStyle: defaultTableStyle,
-  updatrTableData: () => {},
+  updateTableData: () => {},
   getCellProps: () => {},
 };
 

@@ -25,9 +25,20 @@ export const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case types.AUTO_LOGIN_SUCCESS: {
+      // return {
+      //   ...state,
+      //   user: action.payload,
+      // };
       return {
         ...state,
-        user: action.payload,
+        user: {
+          meta: action.payload,
+          co: action.payload.attributes['custom:Company'],
+          branch: action.payload.attributes['custom:Branch'],
+          code: `${action.payload.attributes['custom:CoCode']}#${
+            action.payload.attributes['custom:BrCode']
+          }`,
+        },
       };
     }
     case types.AUTO_LOGIN_FAILURE: {
@@ -39,7 +50,14 @@ export default (state = initialState, action) => {
     case types.LOGIN_SUCCESS: {
       return {
         ...state,
-        user: action.payload,
+        user: {
+          meta: action.payload,
+          co: action.payload.attributes['custom:Company'],
+          branch: action.payload.attributes['custom:Branch'],
+          code: `${action.payload.attributes['custom:CoCode']}#${
+            action.payload.attributes['custom:BrCode']
+          }`,
+        },
       };
     }
     case types.LOGOUT: {

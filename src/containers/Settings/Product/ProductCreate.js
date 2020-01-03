@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { css } from '@emotion/core';
 import * as R from 'ramda';
 import { connect } from 'react-redux';
-import { Text, Flex, Box, Button, Divider } from 'common/components/base';
+import { Flex, Box, Button, Divider } from 'common/components/base';
 import { Input, Label, Select } from 'common/components/form';
-import { Table, EditableTable } from 'common/components/table';
+import { Table } from 'common/components/table';
 import { useMutation } from '@apollo/react-hooks';
 import { SAVE_ITEM } from 'data/graphql/mutation';
 
@@ -15,14 +15,14 @@ const tableHeaderStyle = css`
   text-align: center;
 `;
 
-const unitTableCellStyle = ({ isValidName = true }) => css`
-  td: {
-    ${isValidName &&
-      css`
-        color: red;
-      `}
-  }
-`;
+// const unitTableCellStyle = ({ isValidName = true }) => css`
+//   td: {
+//     ${isValidName &&
+//       css`
+//         color: red;
+//       `}
+//   }
+// `;
 
 const inputStyle = ({ isNumber = true }) => css`
   ${!isNumber &&
@@ -47,6 +47,7 @@ const ProductCreate = ({ user }) => {
 
   useEffect(() => {
     console.log('on useEffect');
+    console.log(user.code);
     if (packingUnitName && multiplyUnit) {
       setUnitButtonDisable(false);
     } else setUnitButtonDisable(true);
@@ -143,18 +144,20 @@ const ProductCreate = ({ user }) => {
     // checkValidInput(productUnit);
 
     // const productName = e.target.productname.value;
-    // if (productName !== '' && productName) {
-    //   console.log('onSaveProduct :', productName);
-    //   saveProduct({
-    //     variables: {
-    //       productData: {
-    //         coCode: user.attributes['custom:CoCode'],
-    //         brCode: user.attributes['custom:BrCode'],
-    //         name: productName,
-    //       },
-    //     },
-    //   });
-    // }
+    if (productName !== '' && productName) {
+      console.log('onSaveProduct :', productName);
+      console.log(user.meta.attributes['custom:CoCode']);
+      console.log(user.meta.attributes['custom:BrCode']);
+      saveProduct({
+        variables: {
+          itemData: {
+            coCode: user.meta.attributes['custom:CoCode'],
+            brCode: user.meta.attributes['custom:BrCode'],
+            name: productName,
+          },
+        },
+      });
+    }
   };
 
   const onAddUnitClick = () => {

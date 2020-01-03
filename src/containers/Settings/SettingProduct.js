@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Text, Flex } from 'common/components/base';
+import { Flex } from 'common/components/base';
 import { Tabs } from 'common/components/tab';
-import { css } from '@emotion/core';
+// import { css } from '@emotion/core';
 import { ProductList, ProductCreate, ProductDetail } from './Product';
 
 const SettingProduct = () => {
@@ -30,19 +30,19 @@ const SettingProduct = () => {
   };
 
   const createNewTab = title => {
-    const _i = Math.floor(Math.random() * 10000);
+    const i = Math.floor(Math.random() * 10000);
     const newTabDetail = {
-      label: _i,
-      panel: <ProductDetail label={_i} closeMe={e => removeDetailtab(e)} />,
+      label: i,
+      panel: <ProductDetail label={i} closeMe={e => removeDetailtab(e)} />,
     };
     setTabs(ts => ts.concat(newTabDetail));
   };
 
   const removeDetailtab = label => {
-    setTabs(tabs => {
-      const _tabs = tabs.filter(tab => tab.label !== label);
+    setTabs(ts => {
+      const t = ts.filter(tab => tab.label !== label);
       setTabIndex(0);
-      return _tabs;
+      return t;
     });
   };
 
