@@ -148,12 +148,15 @@ const ProductCreate = ({ user }) => {
       console.log('onSaveProduct :', productName);
       console.log(user.meta.attributes['custom:CoCode']);
       console.log(user.meta.attributes['custom:BrCode']);
+      console.log('type', productType);
       saveProduct({
         variables: {
           itemData: {
             coCode: user.meta.attributes['custom:CoCode'],
             brCode: user.meta.attributes['custom:BrCode'],
             name: productName,
+            type: productType,
+            group: productGroup,
           },
         },
       });

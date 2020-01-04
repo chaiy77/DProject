@@ -25,36 +25,22 @@ const renderUnAuthenticated = () => (
     <MAuthenticator />
   </Flex>
 );
-
-// const userData = R.path(['payload', 'data']);
-// const username = R.path(['username']);
-// const toUser = R.applySpec({ username });
-
 const listenToAuth = dispatch => {
-  // console.log("================= userApp.listenToAuth =============");
   const login = R.compose(
     dispatch,
     authActions.loginSuccess,
     R.applySpec({ username: R.path(['payload', 'data', 'username']) })
   );
   Hub.listen('auth', data => {
-    // console.log("================= hub.listen =============");
-    // console.log(data);
     login(data);
   });
-  // console.log("================= ======== =============");
 };
 
 const UserApp = ({ user, dispatch }) => {
-  // console.log("================= userApp.js =============");
-  // console.log(user)
-  // console.log("===========================");
   React.useEffect(() => {
-    // console.log("in React.useEffect");
     listenToAuth(dispatch);
     dispatch(authActions.autoLoginRequest());
   }, []);
-  // console.log("===========================");
 
   return (
     <ApolloProvider client={appSyncClient}>
