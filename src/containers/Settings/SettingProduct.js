@@ -8,23 +8,6 @@ const SettingProduct = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [tabs, setTabs] = useState([]);
 
-  const initTabs = [
-    {
-      label: 'Products',
-      panel: (
-        <ProductList
-          setActiveTabIndex={e => activeTabPanel(e)}
-          createNewTab={e => createNewTab(e)}
-        />
-      ),
-    },
-    { label: 'New Product', panel: <ProductCreate /> },
-  ];
-
-  useEffect(() => {
-    setTabs(initTabs);
-  }, []);
-
   const activeTabPanel = index => {
     setTabIndex(index);
   };
@@ -45,6 +28,23 @@ const SettingProduct = () => {
       return t;
     });
   };
+
+  const initTabs = [
+    {
+      label: 'Products',
+      panel: (
+        <ProductList
+          setActiveTabIndex={e => activeTabPanel(e)}
+          createNewTab={e => createNewTab(e)}
+        />
+      ),
+    },
+    { label: 'New Product', panel: <ProductCreate /> },
+  ];
+
+  useEffect(() => {
+    setTabs(initTabs);
+  }, []);
 
   return (
     <Flex justifyContent="column" width="100%">

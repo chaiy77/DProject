@@ -5,11 +5,22 @@ import { connect } from 'react-redux';
 import { Flex, Box, Button, Divider } from 'common/components/base';
 import { Input, Label, Select } from 'common/components/form';
 import { Table } from 'common/components/table';
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useLazyQuery } from '@apollo/react-hooks';
 import { SAVE_ITEM } from 'data/graphql/mutation';
+import { GET_ITEM_TYPES, GET_ITEM_GROUPS } from 'data/graphql/query';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
 
 // https://github.com/ramda/ramda/issues/1629
 const isValidNumber = R.both(R.is(Number), R.complement(R.equals(NaN)));
+
+const testOptions = [
+  { title: '1.The Shawshank Redemption', year: 1994 },
+  { title: '1.The Godfather', year: 1972 },
+  { title: '1.The Godfather: Part II', year: 1974 },
+  { title: '1.The Dark Knight', year: 2008 },
+  { title: '1.12 Angry Men', year: 1957 },
+];
 
 const tableHeaderStyle = css`
   text-align: center;
@@ -39,15 +50,46 @@ const ProductCreate = ({ user }) => {
   const [multiplyUnit, setMultilplyUnit] = useState(0);
   const [productName, setProductName] = useState('');
   const [productGroup, setProductGroup] = useState('');
+  const [productGroupOptions, setProductGroupOptions] = useState([]);
   const [productType, setProductType] = useState('');
+  const [productTypeOptions, setProductTypeOptions] = useState([]);
   const [productDes, setProductDes] = useState('');
   const [isSaveButtonDisable, setSaveButtonDisable] = useState(true);
   const [isUnitButtonDisable, setUnitButtonDisable] = useState(true);
   const [updateUnitIndex, setUpdateUnitIndex] = useState(-1);
 
+  const [getProductTypes] = useLazyQuery(GET_ITEM_TYPES, {
+    onCompleted: data => {
+      console.log(' get Product Types:', data);
+      if (data) {
+        setProductTypeOptions(data.getItemTypes.itemTypes);
+      }
+    },
+  });
+  const [getProductGroups] = useLazyQuery(GET_ITEM_GROUPS, {
+    onCompleted: data => {
+      console.log(' get Product Groups:', data);
+      if (data) {
+        setProductGroupOptions(data.getItemGroups.itemGroups);
+      }
+    },
+  });
+
   useEffect(() => {
-    console.log('on useEffect');
-    console.log(user.code);
+    console.log(user.meta.attributes['custom:CoCode']);
+    getProductTypes({
+      variables: {
+        coCode: user.meta.attributes['custom:CoCode'],
+        brCode: user.meta.attributes['custom:BrCode'],
+      },
+    });
+    getProductGroups({
+      variables: {
+        coCode: user.meta.attributes['custom:CoCode'],
+        brCode: user.meta.attributes['custom:BrCode'],
+      },
+    });
+
     if (packingUnitName && multiplyUnit) {
       setUnitButtonDisable(false);
     } else setUnitButtonDisable(true);
@@ -227,7 +269,7 @@ const ProductCreate = ({ user }) => {
             Product Name
           </Label>
           <Input
-            width="75%"
+            width="40%"
             id="productname"
             name="productname"
             onChange={e => onProductNameChange(e)}
@@ -257,15 +299,15 @@ const ProductCreate = ({ user }) => {
           alignItems="center"
           marginBottom="0.8em"
         >
-          <Label width="25%" htmlFor="productgroup">
-            Group
+          <Label width="25%" htmlFor="producttype">
+            Type
           </Label>
           <Select
-            width="30%"
-            id="productgroup"
-            name="productgroup"
-            // placeholder="สินค้า, วัถุดิบ, เครื่องจักร..."
-            onMyInputChange={onProductGroupChange}
+            width="40%"
+            id="producttype"
+            name="producttype"
+            label="เช่น ขวด PET, ฝา PET,..."
+            onMyInputChange={onProductTypeChange}
           />
         </Flex>
         <Flex
@@ -273,16 +315,18 @@ const ProductCreate = ({ user }) => {
           flexDirection="row"
           alignItems="center"
           marginBottom="0.8em"
+          style={{ postion: 'relative' }}
         >
-          <Label width="25%" htmlFor="producttype">
-            Type
+          <Label width="25%" htmlFor="productgroup">
+            Group
           </Label>
+
           <Select
-            width="30%"
-            id="producttype"
-            name="producttype"
-            // placeholder="ขวด PET, ฝา PET,..."
-            onMyInputChange={onProductTypeChange}
+            width="40%"
+            id="productgroup"
+            name="productgroup"
+            label="สินค้าขายม วัตถุดิบ"
+            onMyInputChange={onProductGroupChange}
           />
         </Flex>
 
