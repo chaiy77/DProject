@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
 import { Text, Flex, Button } from 'common/components/base';
 import { css } from '@emotion/core';
 import { Table } from 'common/components/table';
@@ -27,30 +29,7 @@ const columns = [
   },
 ];
 
-const ProductList = ({ setActiveTabIndex, createNewTab }) => {
-  const [queryResult, setQueryResult] = useState([]);
-  const [getProducts] = useLazyQuery(GET_ITEMS_NAME, {
-    onCompleted: data => {
-      setQueryResult(data.getItemsName.items);
-      console.log(data.getItemsName.items);
-    },
-  });
-
-  useEffect(() => {
-    getProducts({
-      variables: { sk: '#product#&name', count: 5 },
-    });
-  }, []);
-
-  // const filterProduct = () => {
-  //   const r = [];
-  //   if (queryResult.length > 0 && inputText !== '') {
-  //     queryResult.map(prod => {
-  //       if (prod.name.indexOf(inputText) >= 0) r.push(prod);
-  //     });
-  //   }
-  //   setFilterData(r);
-  // };
+const ProductList = ({ setActiveTabIndex, createNewTab, user, tabData }) => {
   const setTabIndex = i => {
     console.log('setTabIndex', i);
     setActiveTabIndex(i);
@@ -71,7 +50,7 @@ const ProductList = ({ setActiveTabIndex, createNewTab }) => {
         <Text> Products List </Text>
       </Flex>
       <Flex width={1} marginTop="1em">
-        <Table columns={columns} data={queryResult} />
+        <Table columns={columns} data={tabData} />
       </Flex>
       <Flex width={1}>
         <Button onClick={() => setTabIndex(1)}> New Product </Button>
@@ -81,14 +60,25 @@ const ProductList = ({ setActiveTabIndex, createNewTab }) => {
   );
 };
 
+const mapStateToProps = state => {
+  return {
+    user: state.auth.user,
+  };
+};
+
 ProductList.propTypes = {
   setActiveTabIndex: PropTypes.func,
   createNewTab: PropTypes.func,
+  tabData: PropTypes.array,
 };
 
 ProductList.defaultProps = {
   setActiveTabIndex: () => {},
   createNewTab: () => {},
+  tabData: [],
 };
 
-export default ProductList;
+export default connect(
+  mapStateToProps,
+  null
+)(ProductList);

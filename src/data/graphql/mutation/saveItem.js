@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  mutation saveItem($itemData: SaveItemInput!) {
-    saveItem(input: $itemData) {
+  mutation saveItem($data: SaveItemInput!) {
+    saveItem(input: $data) {
       id
       sk
     }

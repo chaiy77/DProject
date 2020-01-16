@@ -8,10 +8,16 @@ import * as R from 'ramda';
 const tabLabels = R.path(['label']);
 const tabPanels = R.path(['panel']);
 
-const TabContainer = ({ tabMembers, tabActiveIndex, setActiveTabIndex }) => {
+const TabContainer = ({
+  tabMembers,
+  tabActiveIndex,
+  setActiveTabIndex,
+  tabData,
+}) => {
   const handleChange = (event, newValue) => {
     setActiveTabIndex(newValue);
   };
+
   return (
     <Flex width={1} flexDirection="column">
       <Box>
@@ -45,12 +51,14 @@ TabContainer.propTypes = {
   ),
   tabActiveIndex: PropTypes.number,
   setActiveTabIndex: PropTypes.func,
+  tabData: PropTypes.array,
 };
 
 TabContainer.defaultProps = {
   tabMembers: [],
   tabActiveIndex: 0,
   setActiveTabIndex: () => {},
+  tabData: [],
 };
 
 export default TabContainer;

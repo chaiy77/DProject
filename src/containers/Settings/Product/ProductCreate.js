@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { css } from '@emotion/core';
 import * as R from 'ramda';
 import { connect } from 'react-redux';
@@ -43,11 +44,13 @@ const inputStyle = ({ isNumber = true }) => css`
     `}
 `;
 
-const ProductCreate = ({ user }) => {
+const ProductCreate = ({ user, itemCount }) => {
+  const [defaultID, setDefaultID] = useState('');
   const [productUnit, setProductUnit] = useState([]);
   const [productMainUnit, setProductMainUnit] = useState('');
   const [packingUnitName, setPackingUnitName] = useState('');
   const [multiplyUnit, setMultilplyUnit] = useState(0);
+  const [productID, setProductID] = useState('');
   const [productName, setProductName] = useState('');
   const [productGroup, setProductGroup] = useState('');
   const [productGroupOptions, setProductGroupOptions] = useState([]);
@@ -61,7 +64,7 @@ const ProductCreate = ({ user }) => {
   const [getProductTypes] = useLazyQuery(GET_ITEM_TYPES, {
     onCompleted: data => {
       console.log(' get Product Types:', data);
-      if (data) {
+      if (data.getItemTypes) {
         setProductTypeOptions(data.getItemTypes.itemTypes);
       }
     },
@@ -69,31 +72,32 @@ const ProductCreate = ({ user }) => {
   const [getProductGroups] = useLazyQuery(GET_ITEM_GROUPS, {
     onCompleted: data => {
       console.log(' get Product Groups:', data);
-      if (data) {
+      if (data.getProductGroups) {
         setProductGroupOptions(data.getItemGroups.itemGroups);
       }
     },
   });
 
   useEffect(() => {
-    console.log(user.meta.attributes['custom:CoCode']);
+    let n = itemCount + 1;
+    let i = 'IT-0000' + n;
+    setDefaultID(i);
+
     getProductTypes({
       variables: {
-        coCode: user.meta.attributes['custom:CoCode'],
-        brCode: user.meta.attributes['custom:BrCode'],
+        username: user.meta.username,
       },
     });
     getProductGroups({
       variables: {
-        coCode: user.meta.attributes['custom:CoCode'],
-        brCode: user.meta.attributes['custom:BrCode'],
+        username: user.meta.username,
       },
     });
 
     if (packingUnitName && multiplyUnit) {
       setUnitButtonDisable(false);
     } else setUnitButtonDisable(true);
-  }, [packingUnitName, multiplyUnit]);
+  }, [packingUnitName, multiplyUnit, itemCount]);
 
   const columns = [
     {
@@ -128,6 +132,16 @@ const ProductCreate = ({ user }) => {
       console.log(' save product error:', err);
     },
   });
+  const onProductIDChange = e => {
+    e.preventDefault();
+    const id = e.target.value;
+    if (id !== null && id !== '') {
+      setSaveButtonDisable(false);
+      setProductID(id);
+    } else {
+      setSaveButtonDisable(true);
+    }
+  };
 
   const onProductNameChange = e => {
     e.preventDefault();
@@ -141,17 +155,15 @@ const ProductCreate = ({ user }) => {
   };
 
   const onProductTypeChange = e => {
-    e.preventDefault();
-    const type = e.target.value;
-    setProductType(type);
-    // console.log('onProductTypeChange: ', type);
+    if (e) {
+      setProductType(e);
+    }
   };
 
-  const onProductGroupChange = e => {
-    e.preventDefault();
-    const group = e.target.value;
-    setProductGroup(group);
-    // console.log('onProductGroupChange: ', group);
+  const onProductGroupChange = value => {
+    if (value) {
+      setProductGroup(value);
+    }
   };
 
   const onProductDesChange = e => {
@@ -188,14 +200,12 @@ const ProductCreate = ({ user }) => {
     // const productName = e.target.productname.value;
     if (productName !== '' && productName) {
       console.log('onSaveProduct :', productName);
-      console.log(user.meta.attributes['custom:CoCode']);
-      console.log(user.meta.attributes['custom:BrCode']);
+      console.log(user.meta.username);
       console.log('type', productType);
       saveProduct({
         variables: {
-          itemData: {
-            coCode: user.meta.attributes['custom:CoCode'],
-            brCode: user.meta.attributes['custom:BrCode'],
+          data: {
+            username: user.meta.username,
             name: productName,
             type: productType,
             group: productGroup,
@@ -266,6 +276,23 @@ const ProductCreate = ({ user }) => {
           marginBottom="0.8em"
         >
           <Label width="25%" htmlFor="productname">
+            Product ID
+          </Label>
+          <Input
+            width="40%"
+            id="productID"
+            name="productID"
+            defaultValue={defaultID}
+            onChange={e => onProductIDChange(e)}
+          />
+        </Flex>
+        <Flex
+          width={2 / 3}
+          flexDirection="row"
+          alignItems="center"
+          marginBottom="0.8em"
+        >
+          <Label width="25%" htmlFor="productname">
             Product Name
           </Label>
           <Input
@@ -308,6 +335,7 @@ const ProductCreate = ({ user }) => {
             name="producttype"
             label="เช่น ขวด PET, ฝา PET,..."
             onMyInputChange={onProductTypeChange}
+            selectedValue={productType}
           />
         </Flex>
         <Flex
@@ -327,6 +355,7 @@ const ProductCreate = ({ user }) => {
             name="productgroup"
             label="สินค้าขายม วัตถุดิบ"
             onMyInputChange={onProductGroupChange}
+            selectedValue={productGroup}
           />
         </Flex>
 
@@ -401,6 +430,14 @@ const ProductCreate = ({ user }) => {
       </Box>
     </Flex>
   );
+};
+
+ProductCreate.propTypes = {
+  itemCount: PropTypes.Number,
+};
+
+ProductCreate.defaultProps = {
+  itemCount: 0,
 };
 
 const mapStateToProps = state => {

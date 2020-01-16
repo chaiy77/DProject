@@ -33,3 +33,5 @@ const PARTNERS = [
     des: '',
   },
 ];
+
+export { PARTNERS };

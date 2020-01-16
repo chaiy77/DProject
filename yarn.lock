@@ -8438,6 +8438,11 @@ react-dom@^16.10.2:
     prop-types "^15.6.2"
     scheduler "^0.16.2"
 
+react-hook-form@^4.4.5:
+  version "4.4.5"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-4.4.5.tgz#e0538b0a8860cc38921cae6f02a7cb2e2b8c4241"
+  integrity sha512-rYQ4OFtVW4/ZxgD9WQrMJgA35hIjGo9RsyHKdUC4i2gxY/3Cn1Yc4Q/USUM686HYtvzUly8Du1qZ3Es5OGf5Iw==
+
 react-hot-loader@^4.12.15:
   version "4.12.15"
   resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.12.15.tgz#6bf3984e52edbdf02ea8952777f53da1b3c68c95"

@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  query getItemsName($sk: String!, $count: Int!) {
-    getItemsName(sk: $sk, count: $count) {
+  query getItemsName($username: String!, $count: Int!) {
+    getItemsName(username: $username, count: $count) {
       items {
         id
         name

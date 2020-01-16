@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  query getItemGroups($coCode: String!, $brCode: String!) {
-    getItemGroups(coCode: $coCode, brCode: $brCode) {
+  query getItemGroups($username: String!) {
+    getItemGroups(username: $username) {
       itemGroups
     }
   }

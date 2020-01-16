@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { css } from '@emotion/core';
 import { Table } from 'common/components/table';
 import { useLazyQuery } from '@apollo/react-hooks';
+import { connect } from 'react-redux';
 
 import { GET_ITEMS_NAME } from 'data/graphql/query';
 
@@ -34,7 +35,7 @@ const columns = [
   },
 ];
 
-const QSearchProduct = () => {
+const QSearchProduct = ({ user }) => {
   const [inputText, setInputText] = useState('');
   const [filterData, setFilterData] = useState([]);
   const [queryResult, setQueryResult] = useState([]);
@@ -65,10 +66,11 @@ const QSearchProduct = () => {
 
   const handleClick = () => {
     setDisableSerach(true);
+    console.log(user.meta.username);
     if (inputText === '') {
       if (queryResult.length === 0) {
         getProducts({
-          variables: { sk: '#product#&name', count: 5 },
+          variables: { username: user.meta.username, count: 5 },
         });
       } else {
         setFilterData(queryResult);
@@ -78,7 +80,7 @@ const QSearchProduct = () => {
       filterProduct();
     } else {
       getProducts({
-        variables: { sk: '#product#&name', count: 5 },
+        variables: { username: user.meta.username, count: 5 },
       });
       filterProduct();
     }
@@ -114,4 +116,13 @@ QSearchProduct.propTypes = {
   callback: PropTypes.func.isRequired,
 };
 
-export default QSearchProduct;
+const mapStateToProps = state => {
+  return {
+    user: state.auth.user,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(QSearchProduct);
