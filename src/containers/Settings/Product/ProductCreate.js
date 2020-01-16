@@ -15,26 +15,9 @@ import TextField from '@material-ui/core/TextField';
 // https://github.com/ramda/ramda/issues/1629
 const isValidNumber = R.both(R.is(Number), R.complement(R.equals(NaN)));
 
-const testOptions = [
-  { title: '1.The Shawshank Redemption', year: 1994 },
-  { title: '1.The Godfather', year: 1972 },
-  { title: '1.The Godfather: Part II', year: 1974 },
-  { title: '1.The Dark Knight', year: 2008 },
-  { title: '1.12 Angry Men', year: 1957 },
-];
-
 const tableHeaderStyle = css`
   text-align: center;
 `;
-
-// const unitTableCellStyle = ({ isValidName = true }) => css`
-//   td: {
-//     ${isValidName &&
-//       css`
-//         color: red;
-//       `}
-//   }
-// `;
 
 const inputStyle = ({ isNumber = true }) => css`
   ${!isNumber &&
@@ -45,7 +28,7 @@ const inputStyle = ({ isNumber = true }) => css`
 `;
 
 const ProductCreate = ({ user, itemCount }) => {
-  const [defaultID, setDefaultID] = useState('');
+  // const [defaultID, setDefaultID] = useState('');
   const [productUnit, setProductUnit] = useState([]);
   const [productMainUnit, setProductMainUnit] = useState('');
   const [packingUnitName, setPackingUnitName] = useState('');
@@ -81,7 +64,7 @@ const ProductCreate = ({ user, itemCount }) => {
   useEffect(() => {
     let n = itemCount + 1;
     let i = 'IT-0000' + n;
-    setDefaultID(i);
+    setProductID(i);
 
     getProductTypes({
       variables: {
@@ -200,15 +183,17 @@ const ProductCreate = ({ user, itemCount }) => {
     // const productName = e.target.productname.value;
     if (productName !== '' && productName) {
       console.log('onSaveProduct :', productName);
+      console.log('onSaveProductID :', productID);
       console.log(user.meta.username);
-      console.log('type', productType);
+      console.log('type', productType.value);
       saveProduct({
         variables: {
           data: {
+            id: productID,
             username: user.meta.username,
             name: productName,
-            type: productType,
-            group: productGroup,
+            type: productType.value,
+            group: productGroup.value,
           },
         },
       });
@@ -282,7 +267,7 @@ const ProductCreate = ({ user, itemCount }) => {
             width="40%"
             id="productID"
             name="productID"
-            defaultValue={defaultID}
+            defaultValue={productID}
             onChange={e => onProductIDChange(e)}
           />
         </Flex>
