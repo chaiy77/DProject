@@ -2,30 +2,63 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Flex } from 'common/components/base';
 import { Tabs } from 'common/components/tab';
-import { useLazyQuery } from '@apollo/react-hooks';
-import { GET_ITEMS_NAME } from 'data/graphql/query';
+import { useLazyQuery, useQuery } from '@apollo/react-hooks';
+import { LIST_ITEMS } from 'data/graphql/query';
 // import { css } from '@emotion/core';
+import { ON_UPDATE_ITEMS } from 'data/graphql/subscription';
 import { ProductList, ProductCreate, ProductDetail } from './Product';
 
+let tempProductList = [];
+
 const SettingProduct = ({ user }) => {
-  const tabData = [];
   const [tabIndex, setTabIndex] = useState(0);
   const [tabs, setTabs] = useState([]);
   const [productList, setQueryResult] = useState([]);
+  // const { productData, loading } = useSubscription(ON_UPDATE_ITEMS);
 
-  const [getProducts] = useLazyQuery(GET_ITEMS_NAME, {
-    onCompleted: data => {
-      setQueryResult(data.getItemsName.items);
-    },
-  });
+  const { loading, data, error, subscribeToMore, refetch } = useQuery(
+    LIST_ITEMS,
+    {
+      variables: { username: user.meta.username, count: 5 },
+    }
+  );
+  //https://github.com/apollographql/react-apollo/issues/3317
+  useEffect(() => {
+    const unsubscribe = subscribeToMore({
+      document: ON_UPDATE_ITEMS,
+      updateQuery: (prev, { subscriptionData }) => {
+        console.log('prev:', prev);
+        console.log('subData:', subscriptionData);
+        if (!subscriptionData.data) {
+          return prev;
+        }
+        tempProductList = tempProductList.concat(
+          subscriptionData.data.onUpdateItem
+        );
+
+        setQueryResult(tempProductList);
+      },
+    });
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
-    getProducts({
-      variables: { username: user.meta.username, count: 5 },
-    });
-    setTabs(initTabs());
-    console.log(productList);
+    if (data) {
+      tempProductList = data.getAllItems.items;
+      setQueryResult(tempProductList);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    setTabs(initTabs);
   }, [productList]);
+
+  if (loading) {
+    return <h2> loading.....</h2>;
+  }
+  if (error) {
+    return <h2>{error}</h2>;
+  }
 
   const activeTabPanel = index => {
     setTabIndex(index);
@@ -46,12 +79,6 @@ const SettingProduct = ({ user }) => {
       setTabIndex(0);
       return t;
     });
-  };
-
-  const getProductList = () => {
-    console.log('getPorductlist');
-    const data = { productList };
-    return data.productList;
   };
 
   const initTabs = () => {

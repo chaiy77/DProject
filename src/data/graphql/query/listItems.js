@@ -1,11 +1,12 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  query getAllItems($count: Int!) {
-    getAllItems(count: $count) {
+  query getAllItems($username: String!, $count: Int!) {
+    getAllItems(username: $username, count: $count) {
       items {
-        id
-        sk
+        name
+        itemID
+        mainUnit
       }
     }
   }

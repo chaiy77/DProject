@@ -20,7 +20,7 @@ const columns = [
   {
     id: 'ID',
     Header: () => <div css={tableHeaderStyle}>ID</div>,
-    accessor: row => `${row.id}`,
+    accessor: row => `${row.itemID}`,
   },
   {
     id: 'Name',

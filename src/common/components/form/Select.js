@@ -22,7 +22,13 @@ import CreatableSelect from 'react-select/creatable';
 //   }),
 // };
 
-const Select = ({ label, options, width, onMyInputChange, selectedValue }) => {
+const Select = ({
+  options,
+  width,
+  onMyInputChange,
+  selectedValue,
+  placeholder,
+}) => {
   const handleChange = (newValue, actionMeta) => {
     onMyInputChange(newValue);
   };
@@ -33,6 +39,7 @@ const Select = ({ label, options, width, onMyInputChange, selectedValue }) => {
       value={selectedValue}
       onChange={handleChange}
       options={options}
+      placeholder={placeholder}
       styles={{
         control: base => ({
           ...base,
@@ -45,7 +52,6 @@ const Select = ({ label, options, width, onMyInputChange, selectedValue }) => {
 };
 
 Select.propTypes = {
-  label: PropTypes.string,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.string,
@@ -55,10 +61,10 @@ Select.propTypes = {
   width: PropTypes.string,
   onMyInputChange: PropTypes.func,
   selectedValue: PropTypes.array,
+  placeholder: PropTypes.string,
 };
 
 Select.defaultProps = {
-  label: 'select...',
   options: [
     { value: 'test', label: 'test' },
     { value: 'test2', label: 'test2' },
@@ -66,6 +72,7 @@ Select.defaultProps = {
   width: '350px',
   onMyInputChange: () => {},
   selectedValue: null,
+  placeholder: 'select....',
 };
 
 export default Select;

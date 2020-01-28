@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export default gql`
-  mutation saveItem($data: SaveItemInput!) {
-    saveItem(input: $data) {
+  subscription onUpdateItem {
+    onUpdateItem {
       name
       itemID
       updatedDate
