@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useTable } from 'react-table';
+import { useTable, useSortBy } from 'react-table';
 import { css } from '@emotion/core';
 import * as R from 'ramda';
 
@@ -52,6 +52,7 @@ const Table = ({
   tableStyle,
   resetSelectedRow,
   getSelectedRow,
+  initSortBy,
 }) => {
   const [rowSelectIndex, setRowSelectIndex] = useState(-1);
 
@@ -61,7 +62,21 @@ const Table = ({
     headers,
     rows,
     prepareRow,
-  } = useTable({ columns, data });
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: {
+        sortBy: [
+          {
+            id: 'itemID',
+            desc: false,
+          },
+        ],
+      },
+    },
+    useSortBy
+  );
 
   useEffect(() => {
     setRowSelectIndex(-1); // reset selected row when only didMounte
@@ -84,7 +99,9 @@ const Table = ({
         <thead>
           <tr>
             {headers.map(column => (
-              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                {column.render('Header')}
+              </th>
             ))}
           </tr>
         </thead>
@@ -120,6 +137,7 @@ Table.propTypes = {
   tableStyle: PropTypes.oneOfType([PropTypes.object]),
   resetSelectedRow: PropTypes.bool,
   getSelectedRow: PropTypes.func,
+  initSortBy: PropTypes.string,
 };
 
 Table.defaultProps = {
@@ -128,6 +146,7 @@ Table.defaultProps = {
   resetSelectedRow: true,
   tableStyle: defaultTableStyle,
   getSelectedRow: () => {},
+  initSortBy: '',
 };
 
 export default Table;

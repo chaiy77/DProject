@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
+import * as moment from 'moment';
 import { Text, Flex, Button } from 'common/components/base';
 import { css } from '@emotion/core';
 import { Table } from 'common/components/table';
@@ -18,7 +18,7 @@ const textCenterAlign = css`
 
 const columns = [
   {
-    id: 'ID',
+    id: 'itemID',
     Header: () => <div css={tableHeaderStyle}>ID</div>,
     accessor: row => `${row.itemID}`,
   },
@@ -26,6 +26,46 @@ const columns = [
     id: 'Name',
     Header: () => <div css={tableHeaderStyle}>Name</div>,
     accessor: row => `${row.name}`,
+  },
+  {
+    id: 'Type',
+    Header: () => <div css={tableHeaderStyle}>Type</div>,
+    accessor: row => `${row.type}`,
+  },
+  {
+    id: 'Group',
+    Header: () => <div css={tableHeaderStyle}>Group</div>,
+    accessor: row => `${row.group}`,
+  },
+  {
+    id: 'Unit',
+    Header: () => <div css={tableHeaderStyle}>Unit</div>,
+    accessor: row => `${row.mainUnit}`,
+  },
+  {
+    id: 'PackingUnit',
+    Header: () => <div css={tableHeaderStyle}>Packing Units</div>,
+    accessor: row => {
+      return row.packingUnits.map(unit => unit.name);
+    },
+  },
+  {
+    id: 'createdDate',
+    Header: () => <div css={tableHeaderStyle}>Created Date</div>,
+    accessor: row => {
+      return moment(row.createdDate)
+        .local()
+        .format('DD-MM-YYYY');
+    },
+  },
+  {
+    id: 'updateddDate',
+    Header: () => <div css={tableHeaderStyle}>Updated Date</div>,
+    accessor: row => {
+      return moment(row.createdDate)
+        .local()
+        .format('DD-MM-YYYY');
+    },
   },
 ];
 
@@ -50,7 +90,7 @@ const ProductList = ({ setActiveTabIndex, createNewTab, user, tabData }) => {
         <Text> Products List </Text>
       </Flex>
       <Flex width={1} marginTop="1em">
-        <Table columns={columns} data={tabData} />
+        <Table columns={columns} data={tabData} initSortBy="itemID" />
       </Flex>
       <Flex width={1}>
         <Button onClick={() => setTabIndex(1)}> New Product </Button>

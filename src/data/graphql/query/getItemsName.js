@@ -4,7 +4,7 @@ export default gql`
   query getItemsName($username: String!, $count: Int!) {
     getItemsName(username: $username, count: $count) {
       items {
-        id
+        itemID
         name
       }
     }

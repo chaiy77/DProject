@@ -6,7 +6,7 @@ import { Table } from 'common/components/table';
 import { useLazyQuery } from '@apollo/react-hooks';
 import { connect } from 'react-redux';
 
-import { GET_ITEMS_NAME } from 'data/graphql/query';
+import { LIST_ITEMS } from 'data/graphql/query';
 
 const searchButtonStyle = css`
   margin-left: 3em;
@@ -26,7 +26,7 @@ const columns = [
   {
     id: 'ID',
     Header: () => <div css={tableHeaderStyle}>ID</div>,
-    accessor: row => `${row.id}`,
+    accessor: row => `${row.itemID}`,
   },
   {
     id: 'Name',
@@ -41,11 +41,13 @@ const QSearchProduct = ({ user }) => {
   const [queryResult, setQueryResult] = useState([]);
   const [disableSearch, setDisableSerach] = useState(false);
 
-  const [getProducts, { loading, error, data }] = useLazyQuery(GET_ITEMS_NAME, {
+  const [getProducts, { loading, error, data }] = useLazyQuery(LIST_ITEMS, {
     onCompleted: () => {
-      setQueryResult(data.getItemsName.items);
-      setFilterData(data.getItemsName.items);
-      setDisableSerach(false);
+      if (data.getAllItems) {
+        setQueryResult(data.getAllItems.items);
+        setFilterData(data.getAllItems.items);
+        setDisableSerach(false);
+      }
     },
   });
   const filterProduct = () => {

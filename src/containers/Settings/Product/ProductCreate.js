@@ -3,15 +3,13 @@ import PropTypes from 'prop-types';
 import { css } from '@emotion/core';
 import * as R from 'ramda';
 import { connect } from 'react-redux';
-import { Flex, Box, Button, Divider } from 'common/components/base';
+import { Flex, Box, Button, Divider, Checkbox } from 'common/components/base';
 import { Input, Label, Select } from 'common/components/form';
 import { Table } from 'common/components/table';
 import { useMutation, useLazyQuery } from '@apollo/react-hooks';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { SAVE_ITEM } from 'data/graphql/mutation';
 import { GET_ITEM_TYPES, GET_ITEM_GROUPS } from 'data/graphql/query';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import TextField from '@material-ui/core/TextField';
 
 // https://github.com/ramda/ramda/issues/1629
 const isValidNumber = R.both(R.is(Number), R.complement(R.equals(NaN)));
@@ -30,7 +28,14 @@ const inputStyle = ({ isNumber = true }) => css`
 
 const ItemCreate = ({ user, itemCount }) => {
   // const [defaultID, setDefaultID] = useState('');
-  const { register, handleSubmit, errors } = useForm(); // initialise the hook
+  const {
+    register,
+    handleSubmit,
+    errors,
+    setValue,
+    reset,
+    control,
+  } = useForm(); // initialise the hook
   const [itemUnit, setItemUnit] = useState([]);
   const [itemMainUnit, setItemMainUnit] = useState('');
   const [packingUnitName, setPackingUnitName] = useState('');
@@ -48,8 +53,8 @@ const ItemCreate = ({ user, itemCount }) => {
 
   const [getItemTypes] = useLazyQuery(GET_ITEM_TYPES, {
     onCompleted: data => {
-      const myTypes = data.getItemTypes.types;
       if (data.getItemTypes) {
+        const myTypes = data.getItemTypes.types;
         const tempTypes = myTypes.map(tr => {
           return { value: tr, label: tr };
         });
@@ -60,8 +65,8 @@ const ItemCreate = ({ user, itemCount }) => {
   });
   const [getItemGroups] = useLazyQuery(GET_ITEM_GROUPS, {
     onCompleted: data => {
-      const myGroups = data.getItemGroups.groups;
       if (data.getItemGroups) {
+        const myGroups = data.getItemGroups.groups;
         const tempGroups = myGroups.map(gr => {
           return { value: gr, label: gr };
         });
@@ -181,6 +186,8 @@ const ItemCreate = ({ user, itemCount }) => {
         // alert name is existed
         console.log('name is existed');
       }
+      setValue('packingunit', '');
+      setValue('multiply', '');
     }
   };
 
@@ -195,8 +202,37 @@ const ItemCreate = ({ user, itemCount }) => {
     setItemUnit(_unit);
   };
 
-  const onSaveItem = data => {
-    console.log(data);
+  const onSaveItem = (data, e) => {
+    // console.log(data);
+    // console.log(itemUnit);
+    // console.log(itemType);
+    const pUnit =
+      itemUnit.length > 0
+        ? itemUnit.map(i => {
+            return { name: i.name, multiplier: i.multiply };
+          })
+        : [];
+    console.log(pUnit);
+    if (itemType && itemGroup) {
+      saveItem({
+        variables: {
+          data: {
+            username: user.meta.username,
+            id: data.id,
+            name: data.name,
+            type: itemType.value,
+            group: itemGroup.value,
+            rentable: data.rentable,
+            mainUnit: data.mainunit,
+            packingUnits: pUnit,
+          },
+        },
+      });
+      e.target.reset();
+      setItemType('');
+      setItemGroup('');
+      setItemUnit([]);
+    }
   };
 
   return (
@@ -212,8 +248,13 @@ const ItemCreate = ({ user, itemCount }) => {
             <Box width={1 / 6}>
               <Label>Item ID</Label>
             </Box>
-            <Box width={2 / 6}>
-              <Input name="id" ref={register} /> {/* register an input */}
+            <Box width={1 / 8}>
+              <Input
+                name="id"
+                ref={register({ required: true })}
+                defaultValue={itemID}
+                placeholder="* required"
+              />
             </Box>
           </Flex>
           <Flex flexDirection="row" padding="1em 0 0 2em" alignItems="center">
@@ -221,7 +262,12 @@ const ItemCreate = ({ user, itemCount }) => {
               <Label>Item Name</Label>
             </Box>
             <Box width={2 / 6}>
-              <Input name="name" ref={register} /> {/* register an input */}
+              <Input
+                name="name"
+                ref={register({ required: true })}
+                placeholder="* required"
+              />{' '}
+              {/* register an input */}
             </Box>
           </Flex>
           <Flex flexDirection="row" padding="1em 0 0 2em" alignItems="center">
@@ -237,7 +283,7 @@ const ItemCreate = ({ user, itemCount }) => {
             <Box width={1 / 6}>
               <Label>Type</Label>
             </Box>
-            <Box width={2 / 6}>
+            <Box>
               <Select
                 name="type"
                 ref={register}
@@ -247,10 +293,9 @@ const ItemCreate = ({ user, itemCount }) => {
               />{' '}
               {/* register an input */}
             </Box>
-            <Box width={3 / 6}>
-              <Label>
-                select type or create new, ex."สินค้าขาย, งานระหว่างทำ,
-                วัตถุดิบ,..."{' '}
+            <Box marginLeft="1em">
+              <Label color="hsl(0,0%,50%)">
+                select type or create new, ex."ขวด PET, ฝา PET,..."{' '}
               </Label>
             </Box>
           </Flex>
@@ -268,10 +313,27 @@ const ItemCreate = ({ user, itemCount }) => {
               />{' '}
               {/* register an input */}
             </Box>
-            <Box width={3 / 6}>
-              <Label>
-                select type or create new, ex."ขวด PET, ฝา PET,..."{' '}
+            <Box marginLeft="1em">
+              <Label color="hsl(0,0%,50%)">
+                select type or create new, ex."สินค้าขาย, งานระหว่างทำ,
+                วัตถุดิบ,..."{' '}
               </Label>
+            </Box>
+          </Flex>
+
+          <Flex flexDirection="row" padding="1em 0 0 2em" alignItems="center">
+            <Box width={1 / 6} />
+            <Box>
+              <Controller
+                as={<Checkbox />}
+                name="rentable"
+                type="checkbox"
+                control={control}
+                defaultValue={false}
+              />{' '}
+            </Box>
+            <Box>
+              <Label> Rentable </Label>
             </Box>
           </Flex>
 
@@ -279,8 +341,13 @@ const ItemCreate = ({ user, itemCount }) => {
             <Box width={1 / 6}>
               <Label>Main Unit</Label>
             </Box>
-            <Box width={2 / 6}>
-              <Input name="mainunit" ref={register} /> {/* register an input */}
+            <Box width={1 / 8}>
+              <Input
+                name="mainunit"
+                ref={register({ required: true })}
+                placeholder="* required"
+              />{' '}
+              {/* register an input */}
             </Box>
           </Flex>
 
@@ -288,7 +355,7 @@ const ItemCreate = ({ user, itemCount }) => {
             <Box width={1 / 6}>
               <Label>Packing Unit</Label>
             </Box>
-            <Box width={1 / 6}>
+            <Box width={1 / 8}>
               <Input
                 name="packingunit"
                 ref={register}
@@ -296,10 +363,10 @@ const ItemCreate = ({ user, itemCount }) => {
               />{' '}
               {/* register an input */}
             </Box>
-            <Box width={1 / 8} paddingLeft="2em">
+            <Box width={1 / 8} paddingLeft="3em">
               <Label>Multiply</Label>
             </Box>
-            <Box width={1 / 6}>
+            <Box width={1 / 8}>
               <Input
                 name="multiply"
                 ref={register}
@@ -314,14 +381,26 @@ const ItemCreate = ({ user, itemCount }) => {
             </Box>
           </Flex>
 
-          <Flex>
-            <Box width="50%">
+          <Flex flexDirection="row" padding="1em 0 0 2em">
+            <Box width={1 / 6}></Box>
+            <Box width="50%" marginLeft="">
               <Table
                 columns={columns}
                 data={itemUnit}
                 // getSelectedRow={onUnitTableSelect}
                 // updateTableData={onItemUnitChange}
               />
+            </Box>
+          </Flex>
+          <Flex marginTop="5em" justifyContent="center">
+            <Divider width="90%" />
+          </Flex>
+          <Flex padding="1em 4em 0 2em" justifyContent="flex-end">
+            <Box width={1 / 5}>
+              <Input type="submit" />
+            </Box>
+            <Box width={1 / 5}>
+              <Input type="button" value="RESET" />
             </Box>
           </Flex>
         </Box>

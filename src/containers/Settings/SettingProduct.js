@@ -44,6 +44,7 @@ const SettingProduct = ({ user }) => {
 
   useEffect(() => {
     if (data) {
+      console.log('items: ', data);
       tempProductList = data.getAllItems.items;
       setQueryResult(tempProductList);
     }

@@ -72,7 +72,7 @@ Select.defaultProps = {
   width: '350px',
   onMyInputChange: () => {},
   selectedValue: null,
-  placeholder: 'select....',
+  placeholder: 'select or create new',
 };
 
 export default Select;

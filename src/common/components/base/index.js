@@ -19,3 +19,4 @@ export { default as Tabs } from './Tabs';
 export { default as Tab } from './Tab';
 export { default as AppBar } from './AppBar';
 export { default as Divider } from './Divider';
+export { default as Checkbox } from './Checkbox';

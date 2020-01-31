@@ -5,7 +5,16 @@ export default gql`
     saveItem(input: $data) {
       name
       itemID
+      mainUnit
+      packingUnits {
+        name
+        multiplier
+      }
+      rentable
+      type
+      group
       updatedDate
+      createdDate
     }
   }
 `;

@@ -7,6 +7,15 @@ export default gql`
         name
         itemID
         mainUnit
+        packingUnits {
+          name
+          multiplier
+        }
+        rentable
+        type
+        group
+        updatedDate
+        createdDate
       }
     }
   }
