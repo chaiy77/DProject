@@ -44,14 +44,35 @@ const SettingProduct = ({ user }) => {
 
   useEffect(() => {
     if (data) {
-      console.log('items: ', data);
-      tempProductList = data.getAllItems.items;
-      setQueryResult(tempProductList);
+      if (data.getAllItems.items) {
+        // console.log('items: ', data);
+
+        tempProductList = data.getAllItems.items;
+        setQueryResult(tempProductList);
+      }
     }
   }, [data]);
 
   useEffect(() => {
-    setTabs(initTabs);
+    let prods = [...productList];
+    let ts = [
+      {
+        label: 'Products',
+        panel: (
+          <ProductList
+            setActiveTabIndex={e => activeTabPanel(e)}
+            createNewTab={e => createNewTab(e)}
+            tabData={productList}
+          />
+        ),
+      },
+      {
+        label: 'New Product',
+        panel: <ProductCreate itemCount={prods.length} />,
+      },
+    ];
+
+    setTabs(ts);
   }, [productList]);
 
   if (loading) {
@@ -82,26 +103,26 @@ const SettingProduct = ({ user }) => {
     });
   };
 
-  const initTabs = () => {
-    let prods = [...productList];
-    let ts = [
-      {
-        label: 'Products',
-        panel: (
-          <ProductList
-            setActiveTabIndex={e => activeTabPanel(e)}
-            createNewTab={e => createNewTab(e)}
-            tabData={productList}
-          />
-        ),
-      },
-      {
-        label: 'New Product',
-        panel: <ProductCreate itemCount={prods.length} />,
-      },
-    ];
-    return ts;
-  };
+  // const initTabs = () => {
+  //   let prods = [...productList];
+  //   let ts = [
+  //     {
+  //       label: 'Products',
+  //       panel: (
+  //         <ProductList
+  //           setActiveTabIndex={e => activeTabPanel(e)}
+  //           createNewTab={e => createNewTab(e)}
+  //           tabData={productList}
+  //         />
+  //       ),
+  //     },
+  //     {
+  //       label: 'New Product',
+  //       panel: <ProductCreate itemCount={prods.length} />,
+  //     },
+  //   ];
+  //   return ts;
+  // };
 
   return (
     <Flex justifyContent="column" width="100%">

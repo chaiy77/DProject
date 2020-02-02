@@ -4,7 +4,7 @@ import { Text, Flex } from 'common/components/base';
 const CustomerCreate = () => {
   return (
     <Flex width={1} backgroundColor="gray" paddingY="1em">
-      <Text> New Product</Text>
+      <Text> New Customer</Text>
     </Flex>
   );
 };

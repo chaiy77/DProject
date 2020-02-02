@@ -74,7 +74,6 @@ const ProductList = ({ setActiveTabIndex, createNewTab, user, tabData }) => {
     console.log('setTabIndex', i);
     setActiveTabIndex(i);
   };
-
   const newTab = t => {
     createNewTab(t);
   };
