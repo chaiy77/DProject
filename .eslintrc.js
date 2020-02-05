@@ -19,6 +19,7 @@ module.exports = {
     'import/no-extraneous-dependencies': 0,
     'import/newline-after-import': ['error', { count: 1 }],
     'react/prop-types': [2, { ignore: ['children'] }],
+    'react/forbid-prop-types': { forbid: ['array', 'object'] },
   },
   settings: {
     'import/resolver': {

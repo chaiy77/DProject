@@ -1,38 +1,34 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import styled from '@emotion/styled';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import CreatableSelect from 'react-select/creatable';
-
-// const customStyles = {
-//   option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-//     const color = chroma(data.color);
-//     return {
-//       ...styles,
-//       backgroundColor: isDisabled ? 'red' : blue,
-//       color: '#FFF',
-//       cursor: isDisabled ? 'not-allowed' : 'default',
-//     };
-//   },
-//   control: () => ({
-//     ...styles,
-//     backgroundColor: 'white',
-//     width: 200,
-//   }),
-// };
 
 const Select = ({
   options,
-  width,
   onMyInputChange,
   selectedValue,
   placeholder,
+  width,
 }) => {
-  const handleChange = (newValue, actionMeta) => {
+  const handleChange = newValue => {
     onMyInputChange(newValue);
   };
 
+  // const customStyles = {
+  // option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+  //   const color = chroma(data.color);
+  //   return {
+  //     ...styles,
+  //     backgroundColor: isDisabled ? 'red' : blue,
+  //     color: '#FFF',
+  //     cursor: isDisabled ? 'not-allowed' : 'default',
+  //   };
+  // },
+  // control: styles => ({
+  //   ...styles,
+  //   backgroundColor: 'white',
+  //   width: width ,
+  // }),
+  // };
   return (
     <CreatableSelect
       isClearable
@@ -40,12 +36,15 @@ const Select = ({
       onChange={handleChange}
       options={options}
       placeholder={placeholder}
+      Width={width}
       styles={{
-        control: base => ({
-          ...base,
-          backgroundColor: 'white',
-          width: '300px',
-        }),
+        control: (styles, { selectProps: { Width } }) => {
+          return {
+            ...styles,
+            backgroundColor: 'white',
+            width: Width,
+          };
+        },
       }}
     />
   );
@@ -60,7 +59,12 @@ Select.propTypes = {
   ),
   width: PropTypes.string,
   onMyInputChange: PropTypes.func,
-  selectedValue: PropTypes.array,
+  selectedValue: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string,
+      label: PropTypes.string,
+    })
+  ),
   placeholder: PropTypes.string,
 };
 
@@ -69,9 +73,9 @@ Select.defaultProps = {
     { value: 'test', label: 'test' },
     { value: 'test2', label: 'test2' },
   ],
-  width: '350px',
+  width: '300px',
   onMyInputChange: () => {},
-  selectedValue: null,
+  selectedValue: [],
   placeholder: 'select or create new',
 };
 

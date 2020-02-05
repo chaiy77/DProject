@@ -43,7 +43,7 @@ const SettingCustomer = ({ user }) => {
   // }, []);
 
   useEffect(() => {
-    // console.log('items: ', data);
+    console.log('customers: ', data);
     if (data) {
       if (data.getAllCustomers.customers) {
         tempCustomerList = data.getAllCustomers.customers;

@@ -50,9 +50,9 @@ const Table = ({
   columns,
   data,
   tableStyle,
-  resetSelectedRow,
+  // resetSelectedRow,
   getSelectedRow,
-  initSortBy,
+  // initSortBy,
 }) => {
   const [rowSelectIndex, setRowSelectIndex] = useState(-1);
 
@@ -135,18 +135,18 @@ Table.propTypes = {
   data: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])),
   columns: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.object])),
   tableStyle: PropTypes.oneOfType([PropTypes.object]),
-  resetSelectedRow: PropTypes.bool,
+  // resetSelectedRow: PropTypes.bool,
   getSelectedRow: PropTypes.func,
-  initSortBy: PropTypes.string,
+  // initSortBy: PropTypes.string,
 };
 
 Table.defaultProps = {
   data: [],
   columns: [],
-  resetSelectedRow: true,
+  // resetSelectedRow: true,
   tableStyle: defaultTableStyle,
   getSelectedRow: () => {},
-  initSortBy: '',
+  // initSortBy: '',
 };
 
 export default Table;

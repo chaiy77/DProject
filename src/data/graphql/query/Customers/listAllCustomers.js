@@ -12,7 +12,7 @@ export default gql`
         zipcode
         telNumber
         description
-        type
+        group
       }
     }
   }

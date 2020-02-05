@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Tabs, Tab, AppBar, Flex, Box } from 'common/components/base';
-import CloseIcon from '@material-ui/icons/Close';
-import { css } from '@emotion/core';
+import { Tabs, Tab, Flex, Box } from 'common/components/base';
+// import CloseIcon from '@material-ui/icons/Close';
 import * as R from 'ramda';
 
 const tabLabels = R.path(['label']);
@@ -12,9 +11,10 @@ const TabContainer = ({
   tabMembers,
   tabActiveIndex,
   setActiveTabIndex,
-  tabData,
+  // tabData,
 }) => {
-  const handleChange = (event, newValue) => {
+  const handleChange = (e, newValue) => {
+    e.preventDefault();
     setActiveTabIndex(newValue);
   };
 
@@ -51,14 +51,14 @@ TabContainer.propTypes = {
   ),
   tabActiveIndex: PropTypes.number,
   setActiveTabIndex: PropTypes.func,
-  tabData: PropTypes.array,
+  // tabData: PropTypes.array,
 };
 
 TabContainer.defaultProps = {
   tabMembers: [],
   tabActiveIndex: 0,
   setActiveTabIndex: () => {},
-  tabData: [],
+  // tabData: [],
 };
 
 export default TabContainer;
