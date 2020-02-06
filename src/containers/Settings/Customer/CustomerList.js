@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as moment from 'moment';
@@ -10,9 +10,9 @@ const tableHeaderStyle = css`
   text-align: left;
 `;
 
-const textCenterAlign = css`
-  text-align: center;
-`;
+// const textCenterAlign = css`
+//   text-align: center;
+// `;
 
 const columns = [
   {
@@ -65,9 +65,9 @@ const columns = [
   },
 ];
 
-const CustomerList = ({ setActiveTabIndex, createNewTab, user, tabData }) => {
+const CustomerList = ({ setActiveTabIndex, createNewTab, tabData }) => {
   const setTabIndex = i => {
-    console.log('setTabIndex', i);
+    // console.log('setTabIndex', i);
     setActiveTabIndex(i);
   };
   const newTab = t => {

@@ -42,7 +42,7 @@ export default class MSignIn extends MAuthPiece {
         }
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
         this.error(err);
       });
 

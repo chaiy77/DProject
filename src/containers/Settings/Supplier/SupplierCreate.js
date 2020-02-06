@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import * as R from 'ramda';
-import { Text, Flex, Box, Button } from 'common/components/base';
+// import PropTypes from 'prop-types';
+// import * as R from 'ramda';
+import { Flex, Box } from 'common/components/base';
 import { Input, Label, Select } from 'common/components/form';
 import { useForm } from 'react-hook-form';
 import { DISTRICTS, PROVINCES } from 'data/mock/Thailand';
@@ -18,7 +18,7 @@ const SupplierCreate = () => {
   const [districtOptions, setDistrictOptions] = useState([]);
   const [selectedProvince, setSelectedProvince] = useState([]);
   const [selectedDistrict, setSelectedDistrict] = useState([]);
-  const { register, handleSubmit, errors } = useForm(); // initialise the hook
+  const { register, handleSubmit } = useForm(); // initialise the hook
 
   useEffect(() => {
     setProvinceOptions(provinces);
@@ -34,7 +34,6 @@ const SupplierCreate = () => {
       const province = PROVINCES.filter(pr => {
         return pr.PROVINCE_ID === distArray[0].PROVINCE_ID;
       });
-      console.log(province);
       const selectedProv = [
         { value: province[0].PROVINCE_NAME, label: province[0].PROVINCE_NAME },
       ];
@@ -62,9 +61,10 @@ const SupplierCreate = () => {
   };
 
   const onSubmit = data => {
-    console.log(selectedDistrict);
-    console.log(selectedProvince);
-    console.log(data);
+    // console.log(selectedDistrict);
+    // console.log(selectedProvince);
+    // console.log(data);
+    console.error('create customer data:', data);
   };
 
   return (
@@ -81,7 +81,7 @@ const SupplierCreate = () => {
               <Label>Name</Label>
             </Box>
             <Box width={2 / 3}>
-              <Input name="name" ref={register} /> {/* register an input */}
+              <Input name="name" ref={register} />
             </Box>
           </Flex>
           <Flex flexDirection="row" padding="1em 0 0 2em" alignItems="center">
@@ -89,7 +89,7 @@ const SupplierCreate = () => {
               <Label>Address</Label>
             </Box>
             <Box width={2 / 3}>
-              <Input name="address" ref={register} /> {/* register an input */}
+              <Input name="address" ref={register} />
             </Box>
           </Flex>
           <Flex flexDirection="row" padding="1em 0 0 2em" alignItems="center">
@@ -103,8 +103,7 @@ const SupplierCreate = () => {
                 options={districtOptions}
                 onMyInputChange={onDistrictChange}
                 selectedValue={selectedDistrict}
-              />{' '}
-              {/* register an input */}
+              />
             </Box>
           </Flex>
           <Flex flexDirection="row" padding="1em 0 0 2em" alignItems="center">
@@ -118,8 +117,7 @@ const SupplierCreate = () => {
                 options={provinceOptions}
                 selectedValue={selectedProvince}
                 onMyInputChange={onProvinceChange}
-              />{' '}
-              {/* register an input */}
+              />
             </Box>
           </Flex>
           <Flex flexDirection="row" padding="1em 0 0 2em" alignItems="center">
@@ -127,14 +125,9 @@ const SupplierCreate = () => {
               <Label>Tel No.</Label>
             </Box>
             <Box width={2 / 3}>
-              <Input name="tel" ref={register} /> {/* register an input */}
+              <Input name="tel" ref={register} />
             </Box>
           </Flex>
-
-          {/* <Input name="lastname" ref={register({ required: true })} />
-          {errors.lastname && 'Last name is required.'}
-          <Input name="age" ref={register({ pattern: /\d+/ })} />
-          {errors.age && 'Please enter number for age.'} */}
           <Flex padding="1em 0 0 2em">
             <Box width={1 / 5}>
               <Input type="submit" />

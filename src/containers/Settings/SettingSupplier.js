@@ -12,21 +12,21 @@ const SettingSupplier = () => {
     setTabIndex(index);
   };
 
-  const createNewTab = title => {
-    const i = Math.floor(Math.random() * 10000);
-    const newTabDetail = {
-      label: i,
-      panel: <SupplierDetail label={i} closeMe={e => removeDetailtab(e)} />,
-    };
-    setTabs(ts => ts.concat(newTabDetail));
-  };
-
   const removeDetailtab = label => {
     setTabs(ts => {
       const t = ts.filter(tab => tab.label !== label);
       setTabIndex(0);
       return t;
     });
+  };
+
+  const createNewTab = () => {
+    const i = Math.floor(Math.random() * 10000);
+    const newTabDetail = {
+      label: i,
+      panel: <SupplierDetail label={i} closeMe={e => removeDetailtab(e)} />,
+    };
+    setTabs(ts => ts.concat(newTabDetail));
   };
 
   const initTabs = [

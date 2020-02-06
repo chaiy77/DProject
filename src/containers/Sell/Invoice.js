@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Flex, Box } from 'common/components/base';
+import { Text, Flex } from 'common/components/base';
 
 const Invoice = () => {
   return (

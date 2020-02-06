@@ -18,33 +18,33 @@ const tableHeaderStyle = css`
   text-align: center;
 `;
 
-const inputStyle = ({ isNumber = true }) => css`
-  ${!isNumber &&
-    css`
-      color: red;
-      border-color: red;
-    `}
-`;
+// const inputStyle = ({ isNumber = true }) => css`
+//   ${!isNumber &&
+//     css`
+//       color: red;
+//       border-color: red;
+//     `}
+// `;
 
 const ItemCreate = ({ user, itemCount }) => {
   // const [defaultID, setDefaultID] = useState('');
   const {
     register,
     handleSubmit,
-    errors,
+    // errors,
     setValue,
-    reset,
+    // reset,
     control,
   } = useForm(); // initialise the hook
   const [itemUnit, setItemUnit] = useState([]);
   const [packingUnitName, setPackingUnitName] = useState('');
   const [multiplyUnit, setMultilplyUnit] = useState(0);
   const [itemID, setItemID] = useState('');
-  const [itemGroup, setItemGroup] = useState('');
+  const [itemGroup, setItemGroup] = useState([]);
   const [itemGroupOptions, setItemGroupOptions] = useState([]);
-  const [itemType, setItemType] = useState('');
+  const [itemType, setItemType] = useState([]);
   const [itemTypeOptions, setItemTypeOptions] = useState([]);
-  const [isSaveButtonDisable, setSaveButtonDisable] = useState(true);
+  // const [isSaveButtonDisable, setSaveButtonDisable] = useState(true);
   const [isUnitButtonDisable, setUnitButtonDisable] = useState(true);
   const [updateUnitIndex, setUpdateUnitIndex] = useState(-1);
   const [getItemTypes] = useLazyQuery(GET_ITEM_TYPES, {
@@ -71,8 +71,8 @@ const ItemCreate = ({ user, itemCount }) => {
   });
 
   useEffect(() => {
-    let n = itemCount + 1;
-    let i = 'IT-0000' + n;
+    const n = itemCount + 1;
+    const i = `IT-0000 + ${n}`;
     setItemID(i);
 
     getItemTypes({
@@ -91,39 +91,16 @@ const ItemCreate = ({ user, itemCount }) => {
     } else setUnitButtonDisable(true);
   }, [packingUnitName, multiplyUnit, itemCount]);
 
-  const columns = [
-    {
-      id: 'No.',
-      Header: () => <div css={tableHeaderStyle}>No.</div>,
-      accessor: row => `${row.i}`,
-    },
-    {
-      id: 'name',
-      Header: () => <div css={tableHeaderStyle}>Unit Name</div>,
-      accessor: row => `${row.name}`,
-    },
-    {
-      id: 'multiply',
-      Header: () => <div css={tableHeaderStyle}>multiply</div>,
-      accessor: row => `${row.multiply}`,
-    },
-    {
-      id: 'delete',
-      Header: '',
-      Cell: ({ cell }) => (
-        <button onClick={() => onDeleteUnit(cell.row.original)}>delete</button>
-      ),
-    },
-  ];
+  const [saveItem] = useMutation(SAVE_ITEM);
 
-  const [saveItem] = useMutation(SAVE_ITEM, {
-    onCompleted: data => {
-      console.log(data);
-    },
-    onError: err => {
-      console.log(' save item error:', err);
-    },
-  });
+  // const [saveItem] = useMutation(SAVE_ITEM, {
+  //   onCompleted: data => {
+  //     // console.log(data);
+  //   },
+  //   onError: err => {
+  //     // console.log(' save item error:', err);
+  //   },
+  // });
 
   const onItemTypeChange = value => {
     if (value) {
@@ -150,35 +127,35 @@ const ItemCreate = ({ user, itemCount }) => {
 
   const onAddUnitClick = () => {
     if (isValidNumber(parseFloat(multiplyUnit))) {
-      const _unit = [...itemUnit];
+      const iunit = [...itemUnit];
       // console.log(_unit);
-      const u = _unit.filter(unit => {
+      const u = iunit.filter(unit => {
         return unit.name === packingUnitName;
       });
       if (u.length === 0) {
         // _unit.push({ name: packingUnitName, multiply: multiplyUnit });
         if (updateUnitIndex < 0) {
-          setItemUnit(_u =>
-            _u.concat({
-              i: _unit.length + 1,
+          setItemUnit(iu =>
+            iu.concat({
+              i: iunit.length + 1,
               name: packingUnitName,
               multiply: multiplyUnit,
             })
           );
         } else {
-          _unit[updateUnitIndex] = {
+          iunit[updateUnitIndex] = {
             i: updateUnitIndex + 1,
             name: packingUnitName,
             multiply: multiplyUnit,
           };
-          setItemUnit(_unit);
+          setItemUnit(iunit);
         }
         setPackingUnitName('');
         setMultilplyUnit(0);
         setUpdateUnitIndex(-1);
       } else {
         // alert name is existed
-        console.log('name is existed');
+        // console.log('name is existed');
       }
       setValue('packingunit', '');
       setValue('multiply', '');
@@ -187,13 +164,22 @@ const ItemCreate = ({ user, itemCount }) => {
 
   const onDeleteUnit = row => {
     // console.log('onDeleteUnit with :', row);
-    const _unit = [];
-    itemUnit.map(u => {
-      if (u.name !== row.name) {
-        _unit.push({ i: _unit.length + 1, name: u.name, multiply: u.multiply });
+    const iunit = [];
+    for (let i = 0; i < itemUnit.length; i++) {
+      if (itemUnit[i].name !== row.name) {
+        iunit.push({
+          i: iunit.length + 1,
+          name: itemUnit[i].name,
+          multiply: itemUnit[i].multiply,
+        });
       }
-    });
-    setItemUnit(_unit);
+    }
+    // itemUnit.map(u => {
+    //   if (u.name !== row.name) {
+    //     iunit.push({ i: iunit.length + 1, name: u.name, multiply: u.multiply });
+    //   }
+    // });
+    setItemUnit(iunit);
   };
 
   const onSaveItem = (data, e) => {
@@ -206,7 +192,7 @@ const ItemCreate = ({ user, itemCount }) => {
             return { name: i.name, multiplier: i.multiply };
           })
         : [];
-    console.log(pUnit);
+    // console.log(pUnit);
     if (itemType && itemGroup) {
       saveItem({
         variables: {
@@ -223,11 +209,40 @@ const ItemCreate = ({ user, itemCount }) => {
         },
       });
       e.target.reset();
-      setItemType('');
-      setItemGroup('');
+      setItemType([]);
+      setItemGroup([]);
       setItemUnit([]);
     }
   };
+
+  const columns = [
+    {
+      id: 'No.',
+      Header: () => <div css={tableHeaderStyle}>No.</div>,
+      accessor: row => `${row.i}`,
+    },
+    {
+      id: 'name',
+      Header: () => <div css={tableHeaderStyle}>Unit Name</div>,
+      accessor: row => `${row.name}`,
+    },
+    {
+      id: 'multiply',
+      Header: () => <div css={tableHeaderStyle}>multiply</div>,
+      accessor: row => `${row.multiply}`,
+    },
+    {
+      id: 'delete',
+      Header: '',
+      Cell: ({ cell }) => {
+        return (
+          <button type="button" onClick={() => onDeleteUnit(cell.row.original)}>
+            delete
+          </button>
+        );
+      },
+    },
+  ];
 
   return (
     <Flex
@@ -260,8 +275,7 @@ const ItemCreate = ({ user, itemCount }) => {
                 name="name"
                 ref={register({ required: true })}
                 placeholder="* required"
-              />{' '}
-              {/* register an input */}
+              />
             </Box>
           </Flex>
           <Flex flexDirection="row" padding="1em 0 0 2em" alignItems="center">
@@ -269,8 +283,7 @@ const ItemCreate = ({ user, itemCount }) => {
               <Label>Description</Label>
             </Box>
             <Box width={2 / 6}>
-              <Input name="description" ref={register} />{' '}
-              {/* register an input */}
+              <Input name="description" ref={register} />
             </Box>
           </Flex>
           <Flex flexDirection="row" padding="1em 0 0 2em" alignItems="center">
@@ -280,16 +293,14 @@ const ItemCreate = ({ user, itemCount }) => {
             <Box>
               <Select
                 name="type"
-                ref={register}
                 options={itemTypeOptions}
                 onMyInputChange={onItemTypeChange}
                 selectedValue={itemType}
-              />{' '}
-              {/* register an input */}
+              />
             </Box>
             <Box marginLeft="1em">
               <Label color="hsl(0,0%,50%)">
-                select type or create new, ex."ขวด PET, ฝา PET,..."{' '}
+                {'select type or create new, ex."ขวด PET, ฝา PET,..."'}
               </Label>
             </Box>
           </Flex>
@@ -300,17 +311,16 @@ const ItemCreate = ({ user, itemCount }) => {
             <Box>
               <Select
                 name="group"
-                ref={register}
                 options={itemGroupOptions}
                 onMyInputChange={onItemGroupChange}
                 selectedValue={itemGroup}
-              />{' '}
-              {/* register an input */}
+              />
             </Box>
             <Box marginLeft="1em">
               <Label color="hsl(0,0%,50%)">
-                select type or create new, ex."สินค้าขาย, งานระหว่างทำ,
-                วัตถุดิบ,..."{' '}
+                {
+                  'select type or create new, ex."สินค้าขาย, งานระหว่างทำ, วัตถุดิบ,..."'
+                }
               </Label>
             </Box>
           </Flex>
@@ -324,7 +334,7 @@ const ItemCreate = ({ user, itemCount }) => {
                 type="checkbox"
                 control={control}
                 defaultValue={false}
-              />{' '}
+              />
             </Box>
             <Box>
               <Label> Rentable </Label>
@@ -340,8 +350,7 @@ const ItemCreate = ({ user, itemCount }) => {
                 name="mainunit"
                 ref={register({ required: true })}
                 placeholder="* required"
-              />{' '}
-              {/* register an input */}
+              />
             </Box>
           </Flex>
 
@@ -354,8 +363,7 @@ const ItemCreate = ({ user, itemCount }) => {
                 name="packingunit"
                 ref={register}
                 onChange={onPackingUnitNameChange}
-              />{' '}
-              {/* register an input */}
+              />
             </Box>
             <Box width={1 / 8} paddingLeft="3em">
               <Label>Multiply</Label>
@@ -365,8 +373,7 @@ const ItemCreate = ({ user, itemCount }) => {
                 name="multiply"
                 ref={register}
                 onChange={onMultiplyUnitChange}
-              />{' '}
-              {/* register an input */}
+              />
             </Box>
             <Box paddingLeft="2em">
               <Button disabled={isUnitButtonDisable} onClick={onAddUnitClick}>
@@ -376,7 +383,7 @@ const ItemCreate = ({ user, itemCount }) => {
           </Flex>
 
           <Flex flexDirection="row" padding="1em 0 0 2em">
-            <Box width={1 / 6}></Box>
+            <Box width={1 / 6}>{''}</Box>
             <Box width="50%" marginLeft="">
               <Table
                 columns={columns}
@@ -404,11 +411,13 @@ const ItemCreate = ({ user, itemCount }) => {
 };
 
 ItemCreate.propTypes = {
-  itemCount: PropTypes.Number,
+  itemCount: PropTypes.number,
+  user: PropTypes.object,
 };
 
 ItemCreate.defaultProps = {
   itemCount: 0,
+  user: {},
 };
 
 const mapStateToProps = state => {

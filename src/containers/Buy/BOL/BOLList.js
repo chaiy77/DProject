@@ -4,12 +4,12 @@ import { Text, Flex, Button } from 'common/components/base';
 
 const BOLList = ({ setActiveTabIndex, createNewTab }) => {
   const setTabIndex = i => {
-    console.log('setTabIndex', i);
+    // console.log('setTabIndex', i);
     setActiveTabIndex(i);
   };
 
   const newTab = t => {
-    console.log('newTab');
+    // console.log('newTab');
     createNewTab(t);
   };
 

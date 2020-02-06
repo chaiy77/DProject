@@ -91,7 +91,6 @@ const EditableTable = ({
   columns,
   data,
   tableStyle,
-  resetSelectedRow,
   updateTableData,
   getCellProps,
 }) => {

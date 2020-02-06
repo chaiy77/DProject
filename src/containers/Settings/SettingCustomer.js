@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Flex, Label } from 'common/components/base';
+import { Flex } from 'common/components/base';
 import { Tabs } from 'common/components/tab';
-import { useLazyQuery, useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/react-hooks';
 import { LIST_CUSTOMERS } from 'data/graphql/query';
 // import { css } from '@emotion/core';
 // import { ON_UPDATE_ITEMS } from 'data/graphql/subscription';
@@ -16,13 +17,11 @@ const SettingCustomer = ({ user }) => {
   const [customerList, setCustomerList] = useState([]);
   // const { productData, loading } = useSubscription(ON_UPDATE_ITEMS);
 
-  const { loading, data, error, subscribeToMore, refetch } = useQuery(
-    LIST_CUSTOMERS,
-    {
-      variables: { username: user.meta.username },
-    }
-  );
-  //https://github.com/apollographql/react-apollo/issues/3317
+  // const { loading, data, error, subscribeToMore } = useQuery(LIST_CUSTOMERS, {
+  const { loading, data, error } = useQuery(LIST_CUSTOMERS, {
+    variables: { username: user.meta.username },
+  });
+  // https://github.com/apollographql/react-apollo/issues/3317
   // useEffect(() => {
   //   const unsubscribe = subscribeToMore({
   //     document: ON_UPDATE_ITEMS,
@@ -42,8 +41,29 @@ const SettingCustomer = ({ user }) => {
   //   return () => unsubscribe();
   // }, []);
 
+  const activeTabPanel = index => {
+    setTabIndex(index);
+  };
+
+  const removeDetailtab = label => {
+    setTabs(ts => {
+      const t = ts.filter(tab => tab.label !== label);
+      setTabIndex(0);
+      return t;
+    });
+  };
+
+  const createNewTab = () => {
+    const i = Math.floor(Math.random() * 10000);
+    const newTabDetail = {
+      label: i,
+      panel: <CustomerDetail label={i} closeMe={e => removeDetailtab(e)} />,
+    };
+    setTabs(ts => ts.concat(newTabDetail));
+  };
+
   useEffect(() => {
-    console.log('customers: ', data);
+    // console.log('customers: ', data);
     if (data) {
       if (data.getAllCustomers.customers) {
         tempCustomerList = data.getAllCustomers.customers;
@@ -53,6 +73,7 @@ const SettingCustomer = ({ user }) => {
   }, [data]);
 
   useEffect(() => {
+    const cust = [...customerList];
     const initTabs = [
       {
         label: 'Customers',
@@ -66,7 +87,7 @@ const SettingCustomer = ({ user }) => {
       },
       {
         label: 'New Customer',
-        panel: <CustomerCreate />, //itemCount={prods.length} />,
+        panel: <CustomerCreate customerCount={cust.length} />,
       },
     ];
     setTabs(initTabs);
@@ -78,27 +99,6 @@ const SettingCustomer = ({ user }) => {
   if (error) {
     return <h2>{error}</h2>;
   }
-
-  const activeTabPanel = index => {
-    setTabIndex(index);
-  };
-
-  const createNewTab = title => {
-    const i = Math.floor(Math.random() * 10000);
-    const newTabDetail = {
-      label: i,
-      panel: <CustomerDetail label={i} closeMe={e => removeDetailtab(e)} />,
-    };
-    setTabs(ts => ts.concat(newTabDetail));
-  };
-
-  const removeDetailtab = label => {
-    setTabs(ts => {
-      const t = ts.filter(tab => tab.label !== label);
-      setTabIndex(0);
-      return t;
-    });
-  };
 
   return (
     <Flex justifyContent="column" width="100%">
@@ -115,6 +115,14 @@ const mapStateToProps = state => {
   return {
     user: state.auth.user,
   };
+};
+
+SettingCustomer.propTypes = {
+  user: PropTypes.object,
+};
+
+SettingCustomer.defaultProps = {
+  user: {},
 };
 
 export default connect(

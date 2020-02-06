@@ -2,8 +2,6 @@ import React from 'react';
 import { css } from '@emotion/core';
 import { Flex } from 'common/components/base';
 
-const width = 100;
-
 const Sell = props => {
   const { children } = props;
 

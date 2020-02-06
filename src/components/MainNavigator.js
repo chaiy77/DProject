@@ -74,7 +74,7 @@ const MainNavigator = ({
   const clickLogout = () => {
     Auth.signOut({ global: true })
       .then(() => logout())
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   };
 
   return (
@@ -188,6 +188,7 @@ MainNavigator.propTypes = {
   navigate: PropTypes.func,
   location: PropTypes.oneOfType([PropTypes.object]),
   contentWidth: PropTypes.string,
+  logout: PropTypes.func,
 };
 
 MainNavigator.defaultProps = {
@@ -197,6 +198,7 @@ MainNavigator.defaultProps = {
   navigate: () => {},
   location: { pathname: '' },
   contentWidth: '960px',
+  logout: () => {},
 };
 
 const mapDispachToProps = dispatch => {

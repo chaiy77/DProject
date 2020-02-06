@@ -75,7 +75,7 @@ Select.defaultProps = {
   ],
   width: '300px',
   onMyInputChange: () => {},
-  selectedValue: [],
+  selectedValue: [{ value: '', label: '' }],
   placeholder: 'select or create new',
 };
 

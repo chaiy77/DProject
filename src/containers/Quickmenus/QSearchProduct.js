@@ -5,7 +5,6 @@ import { css } from '@emotion/core';
 import { Table } from 'common/components/table';
 import { useLazyQuery } from '@apollo/react-hooks';
 import { connect } from 'react-redux';
-
 import { LIST_ITEMS } from 'data/graphql/query';
 
 const searchButtonStyle = css`
@@ -18,9 +17,9 @@ const tableHeaderStyle = css`
   text-align: left;
 `;
 
-const textCenterAlign = css`
-  text-align: center;
-`;
+// const textCenterAlign = css`
+//   text-align: center;
+// `;
 
 const columns = [
   {
@@ -41,7 +40,7 @@ const QSearchProduct = ({ user }) => {
   const [queryResult, setQueryResult] = useState([]);
   const [disableSearch, setDisableSerach] = useState(false);
 
-  const [getProducts, { loading, error, data }] = useLazyQuery(LIST_ITEMS, {
+  const [getProducts, { data }] = useLazyQuery(LIST_ITEMS, {
     onCompleted: () => {
       if (data.getAllItems) {
         setQueryResult(data.getAllItems.items);
@@ -53,9 +52,13 @@ const QSearchProduct = ({ user }) => {
   const filterProduct = () => {
     const r = [];
     if (queryResult.length > 0 && inputText !== '') {
-      queryResult.map(prod => {
-        if (prod.name.indexOf(inputText) >= 0) r.push(prod);
-      });
+      for (let i = 0; i < queryResult.length; i++) {
+        if (queryResult[i].name.indexOf(inputText) >= 0) r.push(queryResult[i]);
+      }
+
+      // queryResult.map(prod => {
+      //   if (prod.name.indexOf(inputText) >= 0) r.push(prod);
+      // });
     }
     setFilterData(r);
     setDisableSerach(false);
@@ -68,7 +71,6 @@ const QSearchProduct = ({ user }) => {
 
   const handleClick = () => {
     setDisableSerach(true);
-    console.log(user.meta.username);
     if (inputText === '') {
       if (queryResult.length === 0) {
         getProducts({
@@ -115,7 +117,12 @@ const QSearchProduct = ({ user }) => {
 };
 
 QSearchProduct.propTypes = {
-  callback: PropTypes.func.isRequired,
+  // callback: PropTypes.func.isRequired,
+  user: PropTypes.object,
+};
+
+QSearchProduct.defaultProps = {
+  user: {},
 };
 
 const mapStateToProps = state => {

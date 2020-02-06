@@ -1,20 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as moment from 'moment';
 import { Text, Flex, Button } from 'common/components/base';
 import { css } from '@emotion/core';
 import { Table } from 'common/components/table';
-import { useLazyQuery } from '@apollo/react-hooks';
-import { GET_ITEMS_NAME } from 'data/graphql/query';
 
 const tableHeaderStyle = css`
   text-align: left;
 `;
 
-const textCenterAlign = css`
-  text-align: center;
-`;
+// const textCenterAlign = css`
+//   text-align: center;
+// `;
 
 const columns = [
   {
@@ -69,9 +67,9 @@ const columns = [
   },
 ];
 
-const ProductList = ({ setActiveTabIndex, createNewTab, user, tabData }) => {
+const ProductList = ({ setActiveTabIndex, createNewTab, tabData }) => {
   const setTabIndex = i => {
-    console.log('setTabIndex', i);
+    // console.log('setTabIndex', i);
     setActiveTabIndex(i);
   };
   const newTab = t => {

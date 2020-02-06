@@ -18,8 +18,15 @@ module.exports = {
     'react/jsx-filename-extension': 0,
     'import/no-extraneous-dependencies': 0,
     'import/newline-after-import': ['error', { count: 1 }],
-    'react/prop-types': [2, { ignore: ['children'] }],
-    'react/forbid-prop-types': { forbid: ['array', 'object'] },
+    'react/prop-types': [2, { ignore: ['children', 'cell'] }],
+    'react/forbid-prop-types': [0, { forbid: ['array', 'object'] }],
+    'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
+    'import/prefer-default-export': 0,
+    'react/jsx-curly-brace-presence': [
+      0,
+      { props: 'always', children: 'always' },
+    ],
+    'no-console': ['error', { allow: ['error'] }],
   },
   settings: {
     'import/resolver': {

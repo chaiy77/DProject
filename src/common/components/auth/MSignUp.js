@@ -42,8 +42,8 @@ export default class MSignUp extends MAuthPiece {
           'custom:BrCode': BrCode,
         },
       })
-        .then(data => console.log('signUp completed:', data))
-        .catch(err => console.log('signUp Error: ', err));
+        .then() // data => console.log('signUp completed:', data))
+        .catch(err => console.error('signUp Error: ', err));
       this.changeState('confirmSignUp', username);
     } catch (err) {
       this.error(err);

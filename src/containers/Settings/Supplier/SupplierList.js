@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { Text, Flex, Button } from 'common/components/base';
 import { css } from '@emotion/core';
 import { Table } from 'common/components/table';
-import { useLazyQuery } from '@apollo/react-hooks';
-import { GET_ITEMS_NAME } from 'data/graphql/query';
 
 //
 import { PARTNERS } from 'data/mock/partners';
@@ -13,9 +11,9 @@ const tableHeaderStyle = css`
   text-align: left;
 `;
 
-const textCenterAlign = css`
-  text-align: center;
-`;
+// const textCenterAlign = css`
+//   text-align: center;
+// `;
 
 const columns = [
   {
@@ -50,9 +48,9 @@ const columns = [
   },
 ];
 
-//////// DATA MOCKUP //////////
+//  ////// DATA MOCKUP //////////
 const customers = PARTNERS.filter(partner => partner.type === 'customer');
-////////////////////////////////
+//  //////////////////////////////
 
 const SupplierList = ({ setActiveTabIndex, createNewTab }) => {
   const [queryResult, setQueryResult] = useState([]);
@@ -66,9 +64,6 @@ const SupplierList = ({ setActiveTabIndex, createNewTab }) => {
   //   });
 
   useEffect(() => {
-    console.log('****** supplierList*******');
-    console.log(customers);
-    console.log('***********');
     setQueryResult(customers);
     //   getProducts({
     //     variables: { sk: '#product#&name', count: 5 },
@@ -76,7 +71,6 @@ const SupplierList = ({ setActiveTabIndex, createNewTab }) => {
   }, [customers]);
 
   const setTabIndex = i => {
-    console.log('setTabIndex', i);
     setActiveTabIndex(i);
   };
 

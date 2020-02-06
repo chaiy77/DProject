@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Text, Flex, Box, Button } from 'common/components/base';
+import { Text, Flex, Button } from 'common/components/base';
 import { Label, Input } from 'common/components/form';
 
 const QCreateCustomer = ({ callback }) => {
@@ -9,12 +9,12 @@ const QCreateCustomer = ({ callback }) => {
 
   const inputOnChange = e => {
     e.preventDefault();
-    console.log('inputData change', e.target.value);
+    // console.log('inputData change', e.target.value);
     setInputData(e.target.value);
   };
 
   const handleClick = () => {
-    console.log('handleClick', inputData);
+    // console.log('handleClick', inputData);
     if (inputData) callback(inputData);
   };
   return (

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Flex } from 'common/components/base';
 import { Tabs } from 'common/components/tab';
-import { useLazyQuery, useQuery } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/react-hooks';
 import { LIST_ITEMS } from 'data/graphql/query';
 // import { css } from '@emotion/core';
 import { ON_UPDATE_ITEMS } from 'data/graphql/subscription';
@@ -16,19 +17,38 @@ const SettingProduct = ({ user }) => {
   const [productList, setQueryResult] = useState([]);
   // const { productData, loading } = useSubscription(ON_UPDATE_ITEMS);
 
-  const { loading, data, error, subscribeToMore, refetch } = useQuery(
-    LIST_ITEMS,
-    {
-      variables: { username: user.meta.username, count: 5 },
-    }
-  );
-  //https://github.com/apollographql/react-apollo/issues/3317
+  const { loading, data, error, subscribeToMore } = useQuery(LIST_ITEMS, {
+    variables: { username: user.meta.username, count: 5 },
+  });
+
+  const activeTabPanel = index => {
+    setTabIndex(index);
+  };
+
+  const removeDetailtab = label => {
+    setTabs(ts => {
+      const t = ts.filter(tab => tab.label !== label);
+      setTabIndex(0);
+      return t;
+    });
+  };
+
+  const createNewTab = () => {
+    const i = Math.floor(Math.random() * 10000);
+    const newTabDetail = {
+      label: i,
+      panel: <ProductDetail label={i} closeMe={e => removeDetailtab(e)} />,
+    };
+    setTabs(ts => ts.concat(newTabDetail));
+  };
+
+  // https://github.com/apollographql/react-apollo/issues/3317
   useEffect(() => {
     const unsubscribe = subscribeToMore({
       document: ON_UPDATE_ITEMS,
       updateQuery: (prev, { subscriptionData }) => {
-        console.log('prev:', prev);
-        console.log('subData:', subscriptionData);
+        // console.log('prev:', prev);
+        // console.log('subData:', subscriptionData);
         if (!subscriptionData.data) {
           return prev;
         }
@@ -37,6 +57,7 @@ const SettingProduct = ({ user }) => {
         );
 
         setQueryResult(tempProductList);
+        return null;
       },
     });
     return () => unsubscribe();
@@ -54,8 +75,8 @@ const SettingProduct = ({ user }) => {
   }, [data]);
 
   useEffect(() => {
-    let prods = [...productList];
-    let ts = [
+    const prods = [...productList];
+    const ts = [
       {
         label: 'Products',
         panel: (
@@ -82,27 +103,6 @@ const SettingProduct = ({ user }) => {
     return <h2>{error}</h2>;
   }
 
-  const activeTabPanel = index => {
-    setTabIndex(index);
-  };
-
-  const createNewTab = title => {
-    const i = Math.floor(Math.random() * 10000);
-    const newTabDetail = {
-      label: i,
-      panel: <ProductDetail label={i} closeMe={e => removeDetailtab(e)} />,
-    };
-    setTabs(ts => ts.concat(newTabDetail));
-  };
-
-  const removeDetailtab = label => {
-    setTabs(ts => {
-      const t = ts.filter(tab => tab.label !== label);
-      setTabIndex(0);
-      return t;
-    });
-  };
-
   return (
     <Flex justifyContent="column" width="100%">
       <Tabs
@@ -118,6 +118,14 @@ const mapStateToProps = state => {
   return {
     user: state.auth.user,
   };
+};
+
+SettingProduct.propTypes = {
+  user: PropTypes.object,
+};
+
+SettingProduct.defaultProps = {
+  user: {},
 };
 
 export default connect(

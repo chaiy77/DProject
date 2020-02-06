@@ -26,17 +26,20 @@ const TabContainer = ({
           onChange={handleChange}
           aria-label="simple tabs example"
         >
-          {tabMembers.map((label, idx) => (
+          {tabMembers.map((tabs, idx) => (
             <Tab
-              label={tabLabels(label)}
+              label={tabLabels(tabs)}
+              key={tabLabels(tabs)}
               // icon={<CloseIcon onClick={() => console.log('close')} />}
               id={idx}
             />
           ))}
         </Tabs>
       </Box>
-      {tabMembers.map((panel, idx) => (
-        <Box hidden={tabActiveIndex !== idx}>{tabPanels(panel)}</Box>
+      {tabMembers.map((tabs, idx) => (
+        <Box hidden={tabActiveIndex !== idx} key={tabLabels(tabs)}>
+          {tabPanels(tabs)}
+        </Box>
       ))}
     </Flex>
   );

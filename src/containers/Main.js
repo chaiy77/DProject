@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 // import * as R from 'ramda';
 import { Router, Location, navigate } from '@reach/router';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 
-import { Flex, Box } from 'common/components/base';
+import { Flex } from 'common/components/base';
 import MainNavigator from 'components/MainNavigator';
 import QuickMenu from 'components/QuickMenu';
 
@@ -82,10 +82,9 @@ const StyledRouter = styled(Router)`
 `;
 
 const Main = ({ title }) => {
-  const [qValues, setQValues] = useState('');
-
+  // const [qValues, setQValues] = useState('');
   const callbackFromQuick = data => {
-    console.log(data);
+    console.error(data); // just test callback value from quickmenu
   };
 
   const quickMenus = [

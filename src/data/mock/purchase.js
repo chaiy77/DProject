@@ -37,7 +37,7 @@ const GOOD_RECIEVE = [
     ref: [{ PO: 'PO0001012020' }],
     date: 'now',
     dueDate: '30 วัน',
-    status: 'pending', //pending,inprocess,paid
+    status: 'pending', // pending,inprocess,paid
     supplier: {
       id: '',
       name: 'Pro PET',

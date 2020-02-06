@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { css } from '@emotion/core';
 import * as R from 'ramda';
 
-import { QSearchCustomer } from 'containers/Quickmenus';
+// import { QSearchCustomer } from 'containers/Quickmenus';
 
 import {
   Flex,
@@ -15,11 +15,11 @@ import {
 
 const menuText = R.path(['name']);
 const menuContent = R.path(['component']);
-const expansionPanelStyle = css`
-  &.Mui-expanded {
-    margin: 0;
-  }
-`;
+// const expansionPanelStyle = css`
+//   &.Mui-expanded {
+//     margin: 0;
+//   }
+// `;
 
 const expansionSumStyle = css`
   background-color: lightgray;
@@ -42,6 +42,7 @@ const QuickMenu = ({ menuList }) => {
     <Flex flexDirection="column" width={1} bg="#0e1726">
       {menuList.map((menu, idx) => (
         <ExpansionPanel
+          key={menuText(menu)}
           expanded={expanded === idx}
           onChange={handleMenuClick(idx)}
         >
@@ -55,12 +56,12 @@ const QuickMenu = ({ menuList }) => {
     </Flex>
   );
 };
-
 QuickMenu.propTypes = {
   menuList: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
       component: PropTypes.element,
+      key: PropTypes.string,
     })
   ),
 };
