@@ -74,7 +74,7 @@ const CustomerCreate = ({ user, customerCount }) => {
 
   useEffect(() => {
     const n = customerCount + 1;
-    const i = `CS-0000 ${n}`;
+    const i = `CS-0000${n}`;
     setCustomerID(i);
     getCustomerGroups({
       variables: {

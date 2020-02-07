@@ -49,6 +49,7 @@ const ItemCreate = ({ user, itemCount }) => {
   const [updateUnitIndex, setUpdateUnitIndex] = useState(-1);
   const [getItemTypes] = useLazyQuery(GET_ITEM_TYPES, {
     onCompleted: data => {
+      console.log(data);
       if (data.getItemTypes) {
         const myTypes = data.getItemTypes.types;
         const tempTypes = myTypes.map(tr => {
@@ -60,6 +61,7 @@ const ItemCreate = ({ user, itemCount }) => {
   });
   const [getItemGroups] = useLazyQuery(GET_ITEM_GROUPS, {
     onCompleted: data => {
+      console.log(data);
       if (data.getItemGroups) {
         const myGroups = data.getItemGroups.groups;
         const tempGroups = myGroups.map(gr => {
@@ -72,7 +74,7 @@ const ItemCreate = ({ user, itemCount }) => {
 
   useEffect(() => {
     const n = itemCount + 1;
-    const i = `IT-0000 + ${n}`;
+    const i = `IT-0000${n}`;
     setItemID(i);
 
     getItemTypes({
