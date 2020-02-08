@@ -59,12 +59,7 @@ Select.propTypes = {
   ),
   width: PropTypes.string,
   onMyInputChange: PropTypes.func,
-  selectedValue: PropTypes.arrayOf(
-    PropTypes.shape({
-      value: PropTypes.string,
-      label: PropTypes.string,
-    })
-  ),
+  selectedValue: PropTypes.object,
   placeholder: PropTypes.string,
 };
 
@@ -75,7 +70,7 @@ Select.defaultProps = {
   ],
   width: '300px',
   onMyInputChange: () => {},
-  selectedValue: [{ value: '', label: '' }],
+  selectedValue: { value: '', label: '' },
   placeholder: 'select or create new',
 };
 

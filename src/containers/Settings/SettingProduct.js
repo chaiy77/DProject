@@ -48,7 +48,7 @@ const SettingProduct = ({ user }) => {
       document: ON_UPDATE_ITEMS,
       updateQuery: (prev, { subscriptionData }) => {
         // console.log('prev:', prev);
-        console.log('subData:', subscriptionData);
+        // console.log('subData:', subscriptionData);
         if (!subscriptionData.data) {
           return prev;
         }
@@ -67,7 +67,6 @@ const SettingProduct = ({ user }) => {
     if (data) {
       if (data.getAllItems.items) {
         // console.log('items: ', data);
-
         tempProductList = data.getAllItems.items;
         setQueryResult(tempProductList);
       }

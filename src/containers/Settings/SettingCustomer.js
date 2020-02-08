@@ -6,7 +6,7 @@ import { Tabs } from 'common/components/tab';
 import { useQuery } from '@apollo/react-hooks';
 import { LIST_CUSTOMERS } from 'data/graphql/query';
 // import { css } from '@emotion/core';
-// import { ON_UPDATE_ITEMS } from 'data/graphql/subscription';
+import { ON_UPDATE_CUSTOMERS } from 'data/graphql/subscription';
 import { CustomerCreate, CustomerDetail, CustomerList } from './Customer';
 
 let tempCustomerList = [];
@@ -18,28 +18,28 @@ const SettingCustomer = ({ user }) => {
   // const { productData, loading } = useSubscription(ON_UPDATE_ITEMS);
 
   // const { loading, data, error, subscribeToMore } = useQuery(LIST_CUSTOMERS, {
-  const { loading, data, error } = useQuery(LIST_CUSTOMERS, {
+  const { loading, data, error, subscribeToMore } = useQuery(LIST_CUSTOMERS, {
     variables: { username: user.meta.username },
   });
   // https://github.com/apollographql/react-apollo/issues/3317
-  // useEffect(() => {
-  //   const unsubscribe = subscribeToMore({
-  //     document: ON_UPDATE_ITEMS,
-  //     updateQuery: (prev, { subscriptionData }) => {
-  //       console.log('prev:', prev);
-  //       console.log('subData:', subscriptionData);
-  //       if (!subscriptionData.data) {
-  //         return prev;
-  //       }
-  //       tempProductList = tempProductList.concat(
-  //         subscriptionData.data.onUpdateItem
-  //       );
+  useEffect(() => {
+    const unsubscribe = subscribeToMore({
+      document: ON_UPDATE_CUSTOMERS,
+      updateQuery: (prev, { subscriptionData }) => {
+        console.log('prev:', prev);
+        console.log('subData:', subscriptionData);
+        if (!subscriptionData.data) {
+          return prev;
+        }
+        tempCustomerList = tempCustomerList.concat(
+          subscriptionData.data.onUpdateCustomer
+        );
 
-  //       setQueryResult(tempProductList);
-  //     },
-  //   });
-  //   return () => unsubscribe();
-  // }, []);
+        setCustomerList(tempCustomerList);
+      },
+    });
+    return () => unsubscribe();
+  }, []);
 
   const activeTabPanel = index => {
     setTabIndex(index);
@@ -74,6 +74,7 @@ const SettingCustomer = ({ user }) => {
 
   useEffect(() => {
     const cust = [...customerList];
+    console.log(cust);
     const initTabs = [
       {
         label: 'Customers',

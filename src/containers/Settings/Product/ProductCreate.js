@@ -40,16 +40,16 @@ const ItemCreate = ({ user, itemCount }) => {
   const [packingUnitName, setPackingUnitName] = useState('');
   const [multiplyUnit, setMultilplyUnit] = useState(0);
   const [itemID, setItemID] = useState('');
-  const [itemGroup, setItemGroup] = useState([]);
+  const [itemGroup, setItemGroup] = useState({ value: '', label: '' });
   const [itemGroupOptions, setItemGroupOptions] = useState([]);
-  const [itemType, setItemType] = useState([]);
+  const [itemType, setItemType] = useState({ value: '', label: '' });
   const [itemTypeOptions, setItemTypeOptions] = useState([]);
   // const [isSaveButtonDisable, setSaveButtonDisable] = useState(true);
   const [isUnitButtonDisable, setUnitButtonDisable] = useState(true);
   const [updateUnitIndex, setUpdateUnitIndex] = useState(-1);
   const [getItemTypes] = useLazyQuery(GET_ITEM_TYPES, {
     onCompleted: data => {
-      console.log(data);
+      // console.log(data);
       if (data.getItemTypes) {
         const myTypes = data.getItemTypes.types;
         const tempTypes = myTypes.map(tr => {
@@ -61,7 +61,7 @@ const ItemCreate = ({ user, itemCount }) => {
   });
   const [getItemGroups] = useLazyQuery(GET_ITEM_GROUPS, {
     onCompleted: data => {
-      console.log(data);
+      // console.log(data);
       if (data.getItemGroups) {
         const myGroups = data.getItemGroups.groups;
         const tempGroups = myGroups.map(gr => {
@@ -105,6 +105,7 @@ const ItemCreate = ({ user, itemCount }) => {
   // });
 
   const onItemTypeChange = value => {
+    // console.log(value);
     if (value) {
       setItemType(value);
     }
@@ -185,9 +186,6 @@ const ItemCreate = ({ user, itemCount }) => {
   };
 
   const onSaveItem = (data, e) => {
-    // console.log(data);
-    // console.log(itemUnit);
-    // console.log(itemType);
     const pUnit =
       itemUnit.length > 0
         ? itemUnit.map(i => {

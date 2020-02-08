@@ -49,15 +49,17 @@ const CustomerCreate = ({ user, customerCount }) => {
   // const [multiplyUnit, setMultilplyUnit] = useState(0);
   const [customerID, setCustomerID] = useState('');
   const [groupOptions, setGroupOptions] = useState([]);
-  const [customerGroup, setCustomerGroup] = useState([]);
+  const [customerGroup, setCustomerGroup] = useState({});
   const [provinceOptions, setProvinceOptions] = useState([]);
   const [districtOptions, setDistrictOptions] = useState([]);
-  const [selectedProvince, setSelectedProvince] = useState([
-    { value: '', label: '' },
-  ]);
-  const [selectedDistrict, setSelectedDistrict] = useState([
-    { value: '', label: '' },
-  ]);
+  const [selectedProvince, setSelectedProvince] = useState({
+    value: '',
+    label: '',
+  });
+  const [selectedDistrict, setSelectedDistrict] = useState({
+    value: '',
+    label: '',
+  });
 
   const [getCustomerGroups] = useLazyQuery(GET_CUSTOMER_GROUPS, {
     onCompleted: data => {
@@ -90,30 +92,29 @@ const CustomerCreate = ({ user, customerCount }) => {
 
   const onCustomerGroupChange = value => {
     if (value) {
-      setCustomerGroup([value]);
+      setCustomerGroup(value);
     }
   };
   const onDistrictChange = dist => {
     if (dist) {
-      setSelectedDistrict([dist]);
+      setSelectedDistrict(dist);
       const distArray = DISTRICTS.filter(dt => {
         return dt.DISTRICT_NAME === dist.value;
       });
       const province = PROVINCES.filter(pr => {
         return pr.PROVINCE_ID === distArray[0].PROVINCE_ID;
       });
-      const selectedProv = [
-        {
-          value: province[0].PROVINCE_NAME,
-          label: province[0].PROVINCE_NAME,
-        },
-      ];
+      const selectedProv = {
+        value: province[0].PROVINCE_NAME,
+        label: province[0].PROVINCE_NAME,
+      };
+
       setSelectedProvince(selectedProv);
     }
   };
   const onProvinceChange = prov => {
     if (prov) {
-      setSelectedProvince([prov]);
+      setSelectedProvince(prov);
       const provArray = PROVINCES.filter(pr => {
         return pr.PROVINCE_NAME === prov.value;
       });
@@ -123,12 +124,10 @@ const CustomerCreate = ({ user, customerCount }) => {
       const distOptions = district.map(dist => {
         return { value: dist.DISTRICT_NAME, label: dist.DISTRICT_NAME };
       });
-      setSelectedDistrict([
-        {
-          value: district[0].DISTRICT_NAME,
-          label: district[0].DISTRICT_NAME,
-        },
-      ]);
+      setSelectedDistrict({
+        value: district[0].DISTRICT_NAME,
+        label: district[0].DISTRICT_NAME,
+      });
       setDistrictOptions(distOptions);
     }
   };
@@ -151,11 +150,11 @@ const CustomerCreate = ({ user, customerCount }) => {
       const inputData = {
         username: user.meta.username,
         customerID: data.customerID,
-        group: customerGroup[0].value,
+        group: customerGroup.value,
         name: data.name,
         address: data.address,
-        district: selectedDistrict[0].value,
-        province: selectedProvince[0].value,
+        district: selectedDistrict.value,
+        province: selectedProvince.value,
         zipcode: data.zipcode,
         description: data.description,
         telNumber: data.telNumber,
@@ -167,8 +166,8 @@ const CustomerCreate = ({ user, customerCount }) => {
         },
       });
       e.target.reset();
-      setSelectedDistrict([{ value: '', label: '' }]);
-      setSelectedProvince([{ value: '', label: '' }]);
+      setSelectedDistrict({ value: '', label: '' });
+      setSelectedProvince({ value: '', label: '' });
     }
   };
 
