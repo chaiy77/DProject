@@ -200,7 +200,7 @@ const ItemCreate = ({ user, itemCount }) => {
         variables: {
           data: {
             username: user.meta.username,
-            id: data.id,
+            itemID: data.itemID,
             name: data.name,
             type: itemType.value,
             group: itemGroup.value,
@@ -261,7 +261,7 @@ const ItemCreate = ({ user, itemCount }) => {
             </Box>
             <Box width={1 / 8}>
               <Input
-                name="id"
+                name="itemID"
                 ref={register({ required: true })}
                 defaultValue={itemID}
                 placeholder="* required"

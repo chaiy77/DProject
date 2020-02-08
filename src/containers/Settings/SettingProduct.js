@@ -48,7 +48,7 @@ const SettingProduct = ({ user }) => {
       document: ON_UPDATE_ITEMS,
       updateQuery: (prev, { subscriptionData }) => {
         // console.log('prev:', prev);
-        // console.log('subData:', subscriptionData);
+        console.log('subData:', subscriptionData);
         if (!subscriptionData.data) {
           return prev;
         }
