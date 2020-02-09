@@ -1,18 +1,18 @@
 import React from 'react';
-import { css } from '@emotion/core';
-import { Flex } from 'common/components/base';
 
 const Sell = props => {
   const { children } = props;
 
-  const contentContainerStyle = css`
-    padding: 1em;
-    background: lightblue;
-  `;
+  // Wrapping <div> tag for child in nest react/router.Problem of flex element
+  // https://github.com/reach/router/issues/145
   return (
-    <Flex width={1} css={contentContainerStyle}>
-      {children}
-    </Flex>
+    children &&
+    React.cloneElement(children, {
+      className: 'flex-1',
+      children: React.Children.map(children.props.children, child => {
+        return React.cloneElement(child);
+      }),
+    })
   );
 };
 

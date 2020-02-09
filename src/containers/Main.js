@@ -12,7 +12,7 @@ import QuickMenu from 'components/QuickMenu';
 import Sell from './Sell';
 import Reports from './Reports';
 
-import Invoice from './Sell/Invoice';
+import SellInvoice from './Sell/SellInvoice';
 import SellSetting from './Sell/SellSetting';
 
 import Buy from './Buy';
@@ -21,9 +21,9 @@ import Payment from './Buy/Payment';
 import BuySetting from './Buy/BuySetting';
 
 import Setting from './Setting';
-import SettingProduct from './Settings/SettingProduct';
-import SettingCustomer from './Settings/SettingCustomer';
-import SettingSupplier from './Settings/SettingSupplier';
+import { SettingProduct, SettingCustomer, SettingSupplier } from './Settings';
+// import SettingCustomer from './Settings/SettingCustomer';
+// import SettingSupplier from './Settings/SettingSupplier';
 
 import { QCreateCustomer, QSearchCustomer, QSearchProduct } from './Quickmenus';
 
@@ -145,7 +145,7 @@ const Main = ({ title }) => {
               <BuySetting path="setting" />
             </Buy>
             <Sell path="sell">
-              <Invoice path="invoice" />
+              <SellInvoice path="invoice" />
               <SellSetting path="setting" />
             </Sell>
             <Reports path="reports" />

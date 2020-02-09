@@ -26,16 +26,16 @@ const SettingCustomer = ({ user }) => {
     const unsubscribe = subscribeToMore({
       document: ON_UPDATE_CUSTOMERS,
       updateQuery: (prev, { subscriptionData }) => {
-        console.log('prev:', prev);
-        console.log('subData:', subscriptionData);
+        // console.log('prev:', prev);
+        // console.log('subData:', subscriptionData);
         if (!subscriptionData.data) {
           return prev;
         }
         tempCustomerList = tempCustomerList.concat(
           subscriptionData.data.onUpdateCustomer
         );
-
         setCustomerList(tempCustomerList);
+        return null;
       },
     });
     return () => unsubscribe();
@@ -74,7 +74,7 @@ const SettingCustomer = ({ user }) => {
 
   useEffect(() => {
     const cust = [...customerList];
-    console.log(cust);
+    // console.log(cust);
     const initTabs = [
       {
         label: 'Customers',
