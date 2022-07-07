@@ -85,7 +85,7 @@
     "emotion-theming": "^10.0.19",
     "graphql-tag": "^2.10.1",
     "lodash.merge": "^4.6.2",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "prop-types": "^15.7.2",
     "ramda": "^0.26.1",
     "react": "^16.10.2",
